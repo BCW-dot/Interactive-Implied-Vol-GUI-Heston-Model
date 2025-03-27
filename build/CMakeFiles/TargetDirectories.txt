@@ -1,3 +1,0 @@
-/home/benedikt/c++_vizu_test/build/CMakeFiles/VolatilitySurfaceExplorer.dir
-/home/benedikt/c++_vizu_test/build/CMakeFiles/edit_cache.dir
-/home/benedikt/c++_vizu_test/build/CMakeFiles/rebuild_cache.dir
