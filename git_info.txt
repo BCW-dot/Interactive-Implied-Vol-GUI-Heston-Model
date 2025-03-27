@@ -1,0 +1,7 @@
+cd ..
+
+git add .
+
+git commit -m "Brief description of changes made"
+
+git push
