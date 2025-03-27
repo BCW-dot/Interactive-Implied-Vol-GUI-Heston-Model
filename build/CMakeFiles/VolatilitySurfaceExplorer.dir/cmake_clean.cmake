@@ -13,8 +13,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_tables.cpp.o.d"
   "CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.o"
   "CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.o.d"
-  "CMakeFiles/VolatilitySurfaceExplorer.dir/src/glad.c.o"
-  "CMakeFiles/VolatilitySurfaceExplorer.dir/src/glad.c.o.d"
   "CMakeFiles/VolatilitySurfaceExplorer.dir/src/main.cpp.o"
   "CMakeFiles/VolatilitySurfaceExplorer.dir/src/main.cpp.o.d"
   "VolatilitySurfaceExplorer"
@@ -22,6 +20,6 @@ file(REMOVE_RECURSE
 )
 
 # Per-language clean rules from dependency scanning.
-foreach(lang C CXX)
+foreach(lang CXX)
   include(CMakeFiles/VolatilitySurfaceExplorer.dir/cmake_clean_${lang}.cmake OPTIONAL)
 endforeach()
