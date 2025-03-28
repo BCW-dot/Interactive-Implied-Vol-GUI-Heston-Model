@@ -297,6 +297,54 @@ imgui/imgui_widgets.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.s
 .PHONY : imgui/imgui_widgets.cpp.s
 
+src/base_prices.o: src/base_prices.cpp.o
+.PHONY : src/base_prices.o
+
+# target to build an object file
+src/base_prices.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/base_prices.cpp.o
+.PHONY : src/base_prices.cpp.o
+
+src/base_prices.i: src/base_prices.cpp.i
+.PHONY : src/base_prices.i
+
+# target to preprocess a source file
+src/base_prices.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/base_prices.cpp.i
+.PHONY : src/base_prices.cpp.i
+
+src/base_prices.s: src/base_prices.cpp.s
+.PHONY : src/base_prices.s
+
+# target to generate assembly for a file
+src/base_prices.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/base_prices.cpp.s
+.PHONY : src/base_prices.cpp.s
+
+src/grid.o: src/grid.cpp.o
+.PHONY : src/grid.o
+
+# target to build an object file
+src/grid.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/grid.cpp.o
+.PHONY : src/grid.cpp.o
+
+src/grid.i: src/grid.cpp.i
+.PHONY : src/grid.i
+
+# target to preprocess a source file
+src/grid.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/grid.cpp.i
+.PHONY : src/grid.cpp.i
+
+src/grid.s: src/grid.cpp.s
+.PHONY : src/grid.s
+
+# target to generate assembly for a file
+src/grid.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/grid.cpp.s
+.PHONY : src/grid.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -351,6 +399,12 @@ help:
 	@echo "... imgui/imgui_widgets.o"
 	@echo "... imgui/imgui_widgets.i"
 	@echo "... imgui/imgui_widgets.s"
+	@echo "... src/base_prices.o"
+	@echo "... src/base_prices.i"
+	@echo "... src/base_prices.s"
+	@echo "... src/grid.o"
+	@echo "... src/grid.i"
+	@echo "... src/grid.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

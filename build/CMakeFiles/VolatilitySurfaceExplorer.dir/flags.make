@@ -6,5 +6,5 @@ CXX_DEFINES = -DKOKKOS_DEPENDENCE
 
 CXX_INCLUDES = -I/home/benedikt/c++_vizu_test/include -I/home/benedikt/c++_vizu_test/include/glad -I/home/benedikt/c++_vizu_test/imgui -I/home/benedikt/c++_vizu_test/imgui/backends -I/home/benedikt/c++_vizu_test/src -isystem /usr/local/kokkoskernels/include -isystem /usr/local/kokkos/include
 
-CXX_FLAGS = -std=c++17 -fno-tree-vectorize -extended-lambda -Wext-lambda-captures-this -arch=sm_75
+CXX_FLAGS = -g -std=c++17 -fno-tree-vectorize -extended-lambda -Wext-lambda-captures-this -arch=sm_75
 

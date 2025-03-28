@@ -12,6 +12,8 @@ add_compile_options(-fno-tree-vectorize)
 set(SOURCES
     src/main.cpp
     src/glad.c
+    src/grid.cpp
+    src/base_prices.cpp
     imgui/imgui.cpp
     imgui/imgui_demo.cpp
     imgui/imgui_draw.cpp
