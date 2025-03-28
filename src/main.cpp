@@ -18,10 +18,12 @@ works perfecty
 // GLFW
 #include <GLFW/glfw3.h>
 
+
 // ImGui
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+
 
 // Function prototypes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -41,6 +43,57 @@ float v0 = 0.04f;
 // View rotation
 float rotationX = 30.0f;
 float rotationY = 45.0f;
+
+
+
+// Add coordinate axes with better visual indicators
+void renderAxes() {
+    // Draw the main axes with thicker lines
+    glLineWidth(2.0f);
+    glBegin(GL_LINES);
+    // X-axis (red) - Strike
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex3f(-1.2f, 0.0f, 0.0f);
+    glVertex3f(1.2f, 0.0f, 0.0f);
+    
+    // Y-axis (green) - Price
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glVertex3f(0.0f, -0.2f, 0.0f);
+    glVertex3f(0.0f, 1.2f, 0.0f);
+    
+    // Z-axis (blue) - Maturity
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(0.0f, 0.0f, -1.2f);
+    glVertex3f(0.0f, 0.0f, 1.2f);
+    glEnd();
+    
+    // Reset line width
+    glLineWidth(1.0f);
+    
+    // Draw tick marks on axes
+    glBegin(GL_LINES);
+    // X-axis ticks
+    glColor3f(1.0f, 0.0f, 0.0f);
+    for (float x = -1.0f; x <= 1.0f; x += 0.2f) {
+        glVertex3f(x, 0.0f, 0.0f);
+        glVertex3f(x, -0.05f, 0.0f);
+    }
+    
+    // Z-axis ticks
+    glColor3f(0.0f, 0.0f, 1.0f);
+    for (float z = -1.0f; z <= 1.0f; z += 0.2f) {
+        glVertex3f(0.0f, 0.0f, z);
+        glVertex3f(-0.05f, 0.0f, z);
+    }
+    
+    // Y-axis ticks
+    glColor3f(0.0f, 1.0f, 0.0f);
+    for (float y = 0.0f; y <= 1.0f; y += 0.2f) {
+        glVertex3f(0.0f, y, 0.0f);
+        glVertex3f(-0.05f, y, 0.0f);
+    }
+    glEnd();
+}
 
 // Render the surface
 void renderSurface(const std::vector<std::vector<float>>& surface, float scale) {
@@ -107,63 +160,108 @@ void renderSurface(const std::vector<std::vector<float>>& surface, float scale) 
     
     glEnd();
     
-    // Add coordinate axes
-    glBegin(GL_LINES);
-    // X-axis (red)
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(-1.0f, 0.0f, 0.0f);
-    glVertex3f(1.0f, 0.0f, 0.0f);
+    // Add labeled coordinate axes
+    renderAxes();
     
-    // Y-axis (green)
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glVertex3f(0.0f, -1.0f, 0.0f);
-    glVertex3f(0.0f, 1.0f, 0.0f);
     
-    // Z-axis (blue)
-    glColor3f(0.0f, 0.0f, 1.0f);
-    glVertex3f(0.0f, 0.0f, -1.0f);
-    glVertex3f(0.0f, 0.0f, 1.0f);
-    glEnd();
-
-
-    //For Axes titles etc.
-    // 1) Axis labels (requires freeglut or similar):
-    glColor3f(1.0f, 1.0f, 1.0f);
-
-    // Label for X axis
-    glRasterPos3f(1.05f, 0.0f, 0.0f);
-    glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)"Strikes");
-
-    // Label for Y axis
-    glRasterPos3f(0.0f, 1.05f, 0.0f);
-    glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)"Option Price");
-
-    // Label for Z axis
-    glRasterPos3f(0.0f, 0.0f, 1.05f);
-    glutBitmapString(GLUT_BITMAP_HELVETICA_18, (const unsigned char*)"Maturities");
-
-    // 2) Example numeric ticks for the X axis (adjust ranges to your actual strike range):
-    float minStrike = 80.0f; 
-    float maxStrike = 140.0f; // e.g. if your strikes go from 80 to 140
-    int   numTicks  = 5;
-
-    for (int i = 0; i <= numTicks; i++) {
-        float fraction   = (float)i / (float)numTicks;
-        float x          = fraction * 2.0f - 1.0f; // since X is mapped to [-1,1]
-        float strikeVal  = minStrike + fraction * (maxStrike - minStrike);
-
-        // position label slightly "below" the axis
-        glRasterPos3f(x, -0.05f, 0.0f);
-
-        char label[32];
-        sprintf(label, "%.1f", strikeVal);
-        glutBitmapString(GLUT_BITMAP_HELVETICA_10, (const unsigned char*)label);
-    }
     
     // Reset viewport
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 }
 
+
+// Modify rendering function to handle both surfaces
+// Helper function that just renders the surface data (no axes)
+void renderSurfaceData(const std::vector<std::vector<float>>& surface, float scale) {
+    int width = surface.size();
+    int height = surface[0].size();
+    
+    // Draw lines along width (same as in your original renderSurface)
+    glBegin(GL_LINES);
+    
+    // Draw lines along width
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height - 1; j++) {
+            float x1 = (float)i / width * 2.0f - 1.0f;
+            float z1 = (float)j / height * 2.0f - 1.0f;
+            float y1 = surface[i][j] * scale;
+            
+            float x2 = (float)i / width * 2.0f - 1.0f;
+            float z2 = (float)(j+1) / height * 2.0f - 1.0f;
+            float y2 = surface[i][j+1] * scale;
+            
+            // Color based on height
+            glColor3f(0.2f + y1, 0.4f, 0.6f + y1);
+            glVertex3f(x1, y1, z1);
+            glColor3f(0.2f + y2, 0.4f, 0.6f + y2);
+            glVertex3f(x2, y2, z2);
+        }
+    }
+    
+    // Draw lines along height
+    for (int j = 0; j < height; j++) {
+        for (int i = 0; i < width - 1; i++) {
+            float x1 = (float)i / width * 2.0f - 1.0f;
+            float z1 = (float)j / height * 2.0f - 1.0f;
+            float y1 = surface[i][j] * scale;
+            
+            float x2 = (float)(i+1) / width * 2.0f - 1.0f;
+            float z2 = (float)j / height * 2.0f - 1.0f;
+            float y2 = surface[i+1][j] * scale;
+            
+            // Color based on height
+            glColor3f(0.2f + y1, 0.4f, 0.6f + y1);
+            glVertex3f(x1, y1, z1);
+            glColor3f(0.2f + y2, 0.4f, 0.6f + y2);
+            glVertex3f(x2, y2, z2);
+        }
+    }
+    
+    glEnd();
+}
+
+void renderBothSurfaces(
+    const std::vector<std::vector<float>>& price_surface, 
+    const std::vector<std::vector<float>>& iv_surface, 
+    float rotationX, float rotationY) {
+    
+    // Left viewport for price surface
+    glViewport(100, 100, 500, 500);
+    glEnable(GL_DEPTH_TEST);
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1.5, 1.5, -1.5, 1.5, -2.0, 2.0);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRotatef(rotationX, 1.0f, 0.0f, 0.0f);
+    glRotatef(rotationY, 0.0f, 1.0f, 0.0f);
+    
+    // Render price surface with its scale
+    renderSurfaceData(price_surface, 0.05f);
+    renderAxes();
+    
+    // Right viewport for implied vol surface
+    glViewport(600, 100, 500, 500);
+    glEnable(GL_DEPTH_TEST);
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1.5, 1.5, -1.5, 1.5, -2.0, 2.0);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRotatef(rotationX, 1.0f, 0.0f, 0.0f);
+    glRotatef(rotationY, 0.0f, 1.0f, 0.0f);
+    
+    // Render IV surface with its scale
+    renderSurfaceData(iv_surface, 1.0f);
+    renderAxes();
+    
+    // Reset viewport to full window
+    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+}
 
 
 int main() {
@@ -176,12 +274,12 @@ int main() {
         const double theta = 0.8;
         
         // Grid dimensions - keep small for interactive performance
-        const int m1 = 30;
+        const int m1 = 20;
         const int m2 = 15;
         const int total_size = (m1+1) * (m2+1);
         
         // Surface dimensions
-        const int width = 15;  // Number of strikes
+        const int width = 30;  // Number of strikes
         const int height = 10; // Number of maturities
         
         // Create calibration points for surface
@@ -197,7 +295,8 @@ int main() {
         }
         
         for(int j = 0; j < height; j++) {
-            maturities[j] = 0.25 + j * 0.25;  // 3 months to 2.5 years
+            //maturities[j] = 0.25 + j * 0.25;  // 3 months to 2.5 years
+            maturities[j] = 0.25 + j * 0.65;  // 3 months to 2.5 years
         }
         
         // Create calibration points
@@ -316,6 +415,8 @@ int main() {
         
         // Create view for prices
         Kokkos::View<double*> base_prices("base_prices", width * height);
+
+        Kokkos::View<double*> implied_vols("implied_vols", width * height);
         
         // Create team policy for parallel execution
         using team_policy = Kokkos::TeamPolicy<Device>;
@@ -353,6 +454,8 @@ int main() {
 
         // Surface data for visualization
         std::vector<std::vector<float>> surface(width, std::vector<float>(height));
+        // Create a second surface for implied volatilities
+        std::vector<std::vector<float>> iv_surface(width, std::vector<float>(height));
 
         // Main loop
         bool paramsChanged = true;  // Force computation on first frame
@@ -396,6 +499,11 @@ int main() {
             
             ImGui::End();
 
+            // Create ImGui window for parameters
+            ImGui::Begin("Heston Model Parameters");
+            // [existing parameter sliders and controls]
+            ImGui::End();
+
             // Compute new surface if parameters changed
             if (paramsChanged) {
                 //Reset initial condition
@@ -412,22 +520,55 @@ int main() {
                     bounds_d, deviceGrids, 
                     workspace, base_prices, policy
                 );
+
+                compute_implied_vol_surface(
+                    S_0, r_d,
+                    width, height,
+                    d_calibration_points,
+                    base_prices, implied_vols,
+                    policy
+                );
                 
                 // Copy prices to surface
                 auto h_prices = Kokkos::create_mirror_view(base_prices);
+                auto h_implied_vols = Kokkos::create_mirror_view(implied_vols);
+
                 Kokkos::deep_copy(h_prices, base_prices);
+                Kokkos::deep_copy(h_implied_vols, implied_vols);
+
+            
                 
                 // Convert to surface format
                 for(int i = 0; i < width; i++) {
                     for(int j = 0; j < height; j++) {
                         int idx = j * width + i;
                         surface[i][j] = static_cast<float>(h_prices(idx));
+                        iv_surface[i][j] = static_cast<float>(h_implied_vols(idx));
                     }
                 }
             }
 
-            // Render the surface
-            renderSurface(surface, 0.05f);  // Scale to make heights visible
+            //rendering both surfaces at the same time
+            renderBothSurfaces(surface, iv_surface, rotationX, rotationY);
+
+            
+            // Update your axis information windows to show two sets of labels
+            ImGui::Begin("Price Surface Axes");
+            ImGui::Text("Red axis (X): Strike (%.0f-%.0f)", S_0 * 0.8, S_0 * 1.4);
+            ImGui::Text("Blue axis (Y): Maturity (0.25-2.5 years)");
+            ImGui::Text("Green axis (Z): Option Price (0-%.1f)", 20.0f); 
+            ImGui::End();
+
+            ImGui::Begin("IV Surface Axes");
+            ImGui::Text("Red axis (X): Strike (%.0f-%.0f)", S_0 * 0.8, S_0 * 1.4);
+            ImGui::Text("Blue axis (Y): Maturity (0.25-2.5 years)");
+            ImGui::Text("Green axis (Z): Implied Volatility (0-1)");
+            ImGui::End();
+            
+
+            // Render the surface individually
+            //renderSurface(surface, 0.05f);  // Scale to make heights visible
+            //renderSurface(iv_surface, 1.0f);
 
             // Render ImGui
             ImGui::Render();

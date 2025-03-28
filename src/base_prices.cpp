@@ -88,3 +88,120 @@ void compute_base_prices_multi_maturity(
 }
 
 
+
+void compute_implied_vol_surface(
+    const double S_0, const double r_d,
+    const int width, const int height,
+    const Kokkos::View<CalibrationPoint*>& d_calibration_points,
+    const Kokkos::View<double*>& base_prices,
+    Kokkos::View<double*>& implied_vols,
+    const Kokkos::TeamPolicy<Kokkos::DefaultExecutionSpace>& policy
+) {
+    using Device = Kokkos::DefaultExecutionSpace;
+    
+    // Run the computation in parallel for each strike/maturity pair
+    Kokkos::parallel_for("ImpliedVolComputation", policy,
+        KOKKOS_LAMBDA(const typename Kokkos::TeamPolicy<Device>::member_type& team) {
+            const int idx = team.league_rank();
+            
+            // Get calibration point information
+            CalibrationPoint point = d_calibration_points(idx);
+            double K = point.strike;
+            double T = point.maturity;
+            
+            // Get the option price
+            double option_price = base_prices(idx);
+            
+            // Newton-Raphson method for implied volatility with fallback to bisection
+            double vol = 0.0;
+            
+            // Initial guess for volatility (midpoint of reasonable range)
+            double x = 0.3;
+            
+            // Target option price
+            double C_target = option_price;
+            
+            // Tolerance for convergence
+            const double epsilon = 1e-6;
+            
+            // Maximum iterations
+            const int MAX_ITER = 50;
+            
+            // Newton-Raphson iterations
+            bool fail = false;
+            
+            // Price and vega for current volatility estimate
+            double C = 0.0;
+            double V = 0.0;
+            
+            for (int iter = 0; iter < MAX_ITER && !fail; ++iter) {
+                // Black-Scholes call price
+                double d1 = (Kokkos::log(S_0 / K) + (r_d + 0.5 * x * x) * T) / (x * Kokkos::sqrt(T));
+                double d2 = d1 - x * Kokkos::sqrt(T);
+                
+                // Using cumulative normal distribution approximation
+                double nd1 = 0.5 * (1.0 + Kokkos::erf(d1 / Kokkos::sqrt(2.0)));
+                double nd2 = 0.5 * (1.0 + Kokkos::erf(d2 / Kokkos::sqrt(2.0)));
+                
+                C = S_0 * nd1 - K * Kokkos::exp(-r_d * T) * nd2;
+                
+                // Break if we're within tolerance
+                if (Kokkos::abs(C - C_target) < epsilon) {
+                    break;
+                }
+                
+                // Calculate vega
+                V = S_0 * Kokkos::sqrt(T / (2.0 * M_PI)) * Kokkos::exp(-d1 * d1 / 2.0);
+                
+                // Check if vega is too small
+                if (Kokkos::abs(V) < 1e-10) {
+                    fail = true;
+                    break;
+                }
+                
+                // Update volatility estimate
+                x = x - (C - C_target) / V;
+                
+                // Ensure volatility stays in a reasonable range
+                x = Kokkos::max(0.001, Kokkos::min(2.0, x));
+            }
+            
+            // If Newton-Raphson failed, use bisection method
+            if (fail) {
+                // Bisection parameters
+                double a = 0.001;  // Min volatility
+                double b = 2.0;    // Max volatility
+                
+                // Bisection iterations
+                for (int iter = 0; iter < MAX_ITER; ++iter) {
+                    x = (a + b) / 2.0;
+                    
+                    // Calculate BS price at midpoint
+                    double d1 = (Kokkos::log(S_0 / K) + (r_d + 0.5 * x * x) * T) / (x * Kokkos::sqrt(T));
+                    double d2 = d1 - x * Kokkos::sqrt(T);
+                    
+                    double nd1 = 0.5 * (1.0 + Kokkos::erf(d1 / Kokkos::sqrt(2.0)));
+                    double nd2 = 0.5 * (1.0 + Kokkos::erf(d2 / Kokkos::sqrt(2.0)));
+                    
+                    C = S_0 * nd1 - K * Kokkos::exp(-r_d * T) * nd2;
+                    
+                    // Break if we're within tolerance
+                    if (Kokkos::abs(C - C_target) < epsilon) {
+                        break;
+                    }
+                    
+                    // Update interval
+                    if (C > C_target) {
+                        b = x;
+                    } else {
+                        a = x;
+                    }
+                }
+            }
+            
+            // Store the implied volatility
+            implied_vols(idx) = x;
+        });
+    
+    Kokkos::fence();
+}

@@ -32,3 +32,18 @@ void compute_base_prices_multi_maturity(
     Kokkos::View<double*>& base_prices,
     const Kokkos::TeamPolicy<Kokkos::DefaultExecutionSpace>& policy
 );
+
+// Compute implied volatility surface from option prices
+void compute_implied_vol_surface(
+    // Market parameters
+    const double S_0, const double r_d,
+    // Numerical parameters
+    const int width, const int height,
+    // Pre-computed data structures
+    const Kokkos::View<CalibrationPoint*>& d_calibration_points,
+    // Input prices and output implied volatilities
+    const Kokkos::View<double*>& base_prices,
+    Kokkos::View<double*>& implied_vols,
+    // Team policy for parallelization
+    const Kokkos::TeamPolicy<Kokkos::DefaultExecutionSpace>& policy
+);
