@@ -63,6 +63,8 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "format": "cpp",
-        "__nullptr": "cpp"
+        "__nullptr": "cpp",
+        "__hash_table": "cpp",
+        "__split_buffer": "cpp"
     }
 }

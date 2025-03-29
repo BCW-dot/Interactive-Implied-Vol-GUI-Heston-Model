@@ -51,51 +51,52 @@ void renderAxes() {
     // Draw the main axes with thicker lines
     glLineWidth(2.0f);
     glBegin(GL_LINES);
-    // X-axis (red) - Strike
+    // X-axis (red) - Strike - moved to front corner
     glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3f(-1.2f, 0.0f, 0.0f);
-    glVertex3f(1.2f, 0.0f, 0.0f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(1.0f, -0.1f, -1.0f);
     
-    // Y-axis (green) - Price
+    // Y-axis (green) - Price - moved to front corner
     glColor3f(0.0f, 1.0f, 0.0f);
-    glVertex3f(0.0f, -0.2f, 0.0f);
-    glVertex3f(0.0f, 1.2f, 0.0f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(-1.0f, 1.0f, -1.0f);
     
-    // Z-axis (blue) - Maturity
+    // Z-axis (blue) - Maturity - moved to front corner
     glColor3f(0.0f, 0.0f, 1.0f);
-    glVertex3f(0.0f, 0.0f, -1.2f);
-    glVertex3f(0.0f, 0.0f, 1.2f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(-1.0f, -0.1f, 1.0f);
     glEnd();
     
     // Reset line width
     glLineWidth(1.0f);
     
-    // Draw tick marks on axes
+    // Draw tick marks on axes (adjusted for new position)
     glBegin(GL_LINES);
     // X-axis ticks
     glColor3f(1.0f, 0.0f, 0.0f);
     for (float x = -1.0f; x <= 1.0f; x += 0.2f) {
-        glVertex3f(x, 0.0f, 0.0f);
-        glVertex3f(x, -0.05f, 0.0f);
+        glVertex3f(x, -0.1f, -1.0f);
+        glVertex3f(x, -0.15f, -1.0f);
     }
     
     // Z-axis ticks
     glColor3f(0.0f, 0.0f, 1.0f);
     for (float z = -1.0f; z <= 1.0f; z += 0.2f) {
-        glVertex3f(0.0f, 0.0f, z);
-        glVertex3f(-0.05f, 0.0f, z);
+        glVertex3f(-1.0f, -0.1f, z);
+        glVertex3f(-1.0f, -0.15f, z);
     }
     
     // Y-axis ticks
     glColor3f(0.0f, 1.0f, 0.0f);
     for (float y = 0.0f; y <= 1.0f; y += 0.2f) {
-        glVertex3f(0.0f, y, 0.0f);
-        glVertex3f(-0.05f, y, 0.0f);
+        glVertex3f(-1.0f, y, -1.0f);
+        glVertex3f(-1.05f, y, -1.0f);
     }
     glEnd();
 }
 
-// Render the surface
+// Render the surface single option price
+/*
 void renderSurface(const std::vector<std::vector<float>>& surface, float scale) {
     int width = surface.size();
     int height = surface[0].size();
@@ -168,15 +169,16 @@ void renderSurface(const std::vector<std::vector<float>>& surface, float scale) 
     // Reset viewport
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 }
-
+*/
 
 // Modify rendering function to handle both surfaces
+// Helper function that just renders the surface data (no axes)
 // Helper function that just renders the surface data (no axes)
 void renderSurfaceData(const std::vector<std::vector<float>>& surface, float scale) {
     int width = surface.size();
     int height = surface[0].size();
     
-    // Draw lines along width (same as in your original renderSurface)
+    // Draw lines along width
     glBegin(GL_LINES);
     
     // Draw lines along width
@@ -239,7 +241,7 @@ void renderBothSurfaces(
     glRotatef(rotationY, 0.0f, 1.0f, 0.0f);
     
     // Render price surface with its scale
-    renderSurfaceData(price_surface, 0.05f);
+    renderSurfaceData(price_surface, 0.01f);
     renderAxes();
     
     // Right viewport for implied vol surface
@@ -256,7 +258,7 @@ void renderBothSurfaces(
     glRotatef(rotationY, 0.0f, 1.0f, 0.0f);
     
     // Render IV surface with its scale
-    renderSurfaceData(iv_surface, 1.0f);
+    renderSurfaceData(iv_surface, 2.0f);
     renderAxes();
     
     // Reset viewport to full window
@@ -279,8 +281,17 @@ int main() {
         const int total_size = (m1+1) * (m2+1);
         
         // Surface dimensions
-        const int width = 30;  // Number of strikes
-        const int height = 10; // Number of maturities
+        const int width = 50;  // Number of strikes
+        const int height = 20; // Number of maturities
+
+        // Actual data ranges for visualization
+        float min_strike = S_0 * 0.5f;
+        float max_strike = S_0 * 1.3f;
+        float min_maturity = 0.25f;
+        float max_maturity = 0.25f + (height - 1) * 0.25f; // or whatever your actual range is
+
+        float max_price = 0.5f * min_strike;  // Set a reasonable maximum or compute from data
+        float max_iv = 1.0f;      // Set a reasonable maximum or compute from data
         
         // Create calibration points for surface
         std::vector<CalibrationPoint> calibration_points;
@@ -289,14 +300,15 @@ int main() {
         std::vector<double> strikes(width);
         std::vector<double> maturities(height);
         
-        // Define strikes and maturities for the surface
+        // Then use these variables to define strikes and maturities for the surface
         for(int i = 0; i < width; i++) {
-            strikes[i] = S_0 * (0.8 + 0.04 * i);  // 80% to 140% of spot
+            // Evenly distribute strikes between min_strike and max_strike
+            strikes[i] = min_strike + (float)i/(width-1) * (max_strike - min_strike);
         }
-        
+
         for(int j = 0; j < height; j++) {
-            //maturities[j] = 0.25 + j * 0.25;  // 3 months to 2.5 years
-            maturities[j] = 0.25 + j * 0.65;  // 3 months to 2.5 years
+            // Evenly distribute maturities between min_maturity and max_maturity
+            maturities[j] = min_maturity + (float)j/(height-1) * (max_maturity - min_maturity);
         }
         
         // Create calibration points
@@ -459,7 +471,9 @@ int main() {
 
         // Main loop
         bool paramsChanged = true;  // Force computation on first frame
+        static int totalPdesSolved = 0;
         
+        std::cout << "starting render" << std::endl;
         while (!glfwWindowShouldClose(window)) {
             // Process input
             processInput(window);
@@ -483,7 +497,7 @@ int main() {
             if (ImGui::SliderFloat("Eta", &eta, 0.01f, 0.5f)) paramsChanged = true;
             if (ImGui::SliderFloat("Sigma", &sigma, 0.01f, 1.0f)) paramsChanged = true;
             if (ImGui::SliderFloat("Rho", &rho, -1.0f, 1.0f)) paramsChanged = true;
-            if (ImGui::SliderFloat("V0", &v0, 0.01f, 0.5f)) paramsChanged = true;
+            if (ImGui::SliderFloat("V0", &v0, 0.01f, 1.5f)) paramsChanged = true;
             
             ImGui::Separator();
             
@@ -496,6 +510,19 @@ int main() {
             ImGui::Separator();
             ImGui::Text("Current values: kappa=%.2f, eta=%.4f, sigma=%.2f, rho=%.2f, v0=%.4f", 
                         kappa, eta, sigma, rho, v0);
+
+            /*
+            ImGui::Text("PDEs solved: %d", totalPdesSolved);
+            ImGui::SameLine();
+            int iconCount = std::min(20, width * height / 10); // Limit icons to 20
+            for (int i = 0; i < iconCount; i++) {
+                ImGui::SameLine(0.0f, 5.0f);
+                ImGui::Text("⚙️"); // Gear icon to represent calculations
+            }
+            */
+
+            // Add the PDE counter display
+            ImGui::Text("PDEs solved: %d (current: %d)", totalPdesSolved, width * height);
             
             ImGui::End();
 
@@ -528,6 +555,8 @@ int main() {
                     base_prices, implied_vols,
                     policy
                 );
+
+                totalPdesSolved += (width * height);
                 
                 // Copy prices to surface
                 auto h_prices = Kokkos::create_mirror_view(base_prices);
@@ -549,19 +578,21 @@ int main() {
             }
 
             //rendering both surfaces at the same time
+            //renderBothSurfaces(surface, iv_surface, rotationX, rotationY);
+            // In your main loop:
             renderBothSurfaces(surface, iv_surface, rotationX, rotationY);
 
             
             // Update your axis information windows to show two sets of labels
             ImGui::Begin("Price Surface Axes");
-            ImGui::Text("Red axis (X): Strike (%.0f-%.0f)", S_0 * 0.8, S_0 * 1.4);
-            ImGui::Text("Blue axis (Y): Maturity (0.25-2.5 years)");
-            ImGui::Text("Green axis (Z): Option Price (0-%.1f)", 20.0f); 
+            ImGui::Text("Red axis (X): Strike (%.0f-%.0f)", min_strike, max_strike);
+            ImGui::Text("Blue axis (Y): Maturity (%.2f-%.2f years)", min_maturity, max_maturity);
+            ImGui::Text("Green axis (Z): Option Price (0-%.1f)", max_price); 
             ImGui::End();
 
             ImGui::Begin("IV Surface Axes");
-            ImGui::Text("Red axis (X): Strike (%.0f-%.0f)", S_0 * 0.8, S_0 * 1.4);
-            ImGui::Text("Blue axis (Y): Maturity (0.25-2.5 years)");
+            ImGui::Text("Red axis (X): Strike (%.0f-%.0f)", min_strike, max_strike);
+            ImGui::Text("Blue axis (Y): Maturity (%.2f-%.2f years)", min_maturity, max_maturity);
             ImGui::Text("Green axis (Z): Implied Volatility (0-1)");
             ImGui::End();
             
