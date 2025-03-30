@@ -47,8 +47,57 @@ float rotationY = 45.0f;
 
 
 // Add coordinate axes with better visual indicators
+//for european call without indicators
+void renderAxes() {
+    // Draw the main axes with thicker lines
+    glLineWidth(2.0f);
+    glBegin(GL_LINES);
+    // X-axis (red) - Strike - moved to front corner
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(1.0f, -0.1f, -1.0f);
+    
+    // Y-axis (green) - Price - moved to front corner
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(-1.0f, 1.0f, -1.0f);
+    
+    // Z-axis (blue) - Maturity - moved to front corner
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(-1.0f, -0.1f, 1.0f);
+    glEnd();
+    
+    // Reset line width
+    glLineWidth(1.0f);
+    
+    // Draw tick marks on axes (adjusted for new position)
+    glBegin(GL_LINES);
+    // X-axis ticks
+    glColor3f(1.0f, 0.0f, 0.0f);
+    for (float x = -1.0f; x <= 1.0f; x += 0.2f) {
+        glVertex3f(x, -0.1f, -1.0f);
+        glVertex3f(x, -0.15f, -1.0f);
+    }
+    
+    // Z-axis ticks
+    glColor3f(0.0f, 0.0f, 1.0f);
+    for (float z = -1.0f; z <= 1.0f; z += 0.2f) {
+        glVertex3f(-1.0f, -0.1f, z);
+        glVertex3f(-1.0f, -0.15f, z);
+    }
+    
+    // Y-axis ticks
+    glColor3f(0.0f, 1.0f, 0.0f);
+    for (float y = 0.0f; y <= 1.0f; y += 0.2f) {
+        glVertex3f(-1.0f, y, -1.0f);
+        glVertex3f(-1.05f, y, -1.0f);
+    }
+    glEnd();
+}
+
 // Modified function to include indicators
-// Modified function to include indicators
+//for american dividneds with indicators
 void renderAxes(float S_0, const std::vector<double>& maturity_points, 
     float min_strike, float max_strike, float min_maturity, float max_maturity) {
     // Draw the main axes with thicker lines (keep your existing code)
@@ -169,6 +218,7 @@ void renderSurfaceData(const std::vector<std::vector<float>>& surface, float sca
     glEnd();
 }
 
+//for american divident with indicators
 void renderBothSurfaces(
     const std::vector<std::vector<float>>& price_surface, 
     const std::vector<std::vector<float>>& iv_surface, 
@@ -352,6 +402,49 @@ void renderBothSurfaces(
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 }
 
+//for european call without indicators
+void renderBothSurfaces(
+    const std::vector<std::vector<float>>& price_surface, 
+    const std::vector<std::vector<float>>& iv_surface, 
+    float rotationX, float rotationY) {
+    
+    // Left viewport for price surface
+    glViewport(100, 100, 500, 500);
+    glEnable(GL_DEPTH_TEST);
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1.5, 1.5, -1.5, 1.5, -2.0, 2.0);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRotatef(rotationX, 1.0f, 0.0f, 0.0f);
+    glRotatef(rotationY, 0.0f, 1.0f, 0.0f);
+    
+    // Render price surface with its scale
+    renderSurfaceData(price_surface, 0.01f);
+    renderAxes();
+    
+    // Right viewport for implied vol surface
+    glViewport(600, 100, 500, 500);
+    glEnable(GL_DEPTH_TEST);
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-1.5, 1.5, -1.5, 1.5, -2.0, 2.0);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glRotatef(rotationX, 1.0f, 0.0f, 0.0f);
+    glRotatef(rotationY, 0.0f, 1.0f, 0.0f);
+    
+    // Render IV surface with its scale
+    renderSurfaceData(iv_surface, 2.0f);
+    renderAxes();
+    
+    // Reset viewport to full window
+    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+}
 
 int main() {
     Kokkos::initialize();
@@ -666,7 +759,7 @@ int main() {
                 Kokkos::deep_copy(workspace.U, U_0); 
                 
                 // Compute European Call option prices 
-                /*
+                
                 compute_base_prices_multi_maturity(
                     S_0, v0, r_d, r_f, 
                     rho, sigma, kappa, eta, 
@@ -677,9 +770,10 @@ int main() {
                     bounds_d, deviceGrids, 
                     workspace, base_prices, policy
                 );
-                */
+                
 
                 // Compute American Call option prices on a dividend paying stock
+                /*
                 compute_base_prices_multi_maturity_american_dividends(
                     S_0, v0,
                     r_d, r_f,
@@ -698,6 +792,7 @@ int main() {
                     base_prices,
                     policy
                 );
+                */
 
                 //Compute the Implied Vol-surface to the computed prices
                 compute_implied_vol_surface(
@@ -730,12 +825,10 @@ int main() {
             }
 
             //Renders both surfaces next to each other
-            //renderBothSurfaces(surface, iv_surface, rotationX, rotationY);
+            renderBothSurfaces(surface, iv_surface, rotationX, rotationY);
 
             //Renders surfaces with S_0 and dividend dates marked
-            renderBothSurfaces(surface, iv_surface, rotationX, rotationY, 
-                S_0, dividend_dates, 
-                min_strike, max_strike, min_maturity, max_maturity);
+            //renderBothSurfaces(surface, iv_surface, rotationX, rotationY, S_0, dividend_dates, min_strike, max_strike, min_maturity, max_maturity);
 
             
             // Update your axis information windows to show two sets of labels
