@@ -47,29 +47,32 @@ float rotationY = 45.0f;
 
 
 // Add coordinate axes with better visual indicators
-void renderAxes() {
-    // Draw the main axes with thicker lines
+// Modified function to include indicators
+// Modified function to include indicators
+void renderAxes(float S_0, const std::vector<double>& maturity_points, 
+    float min_strike, float max_strike, float min_maturity, float max_maturity) {
+    // Draw the main axes with thicker lines (keep your existing code)
     glLineWidth(2.0f);
     glBegin(GL_LINES);
     // X-axis (red) - Strike - moved to front corner
     glColor3f(1.0f, 0.0f, 0.0f);
     glVertex3f(-1.0f, -0.1f, -1.0f);
     glVertex3f(1.0f, -0.1f, -1.0f);
-    
+
     // Y-axis (green) - Price - moved to front corner
     glColor3f(0.0f, 1.0f, 0.0f);
     glVertex3f(-1.0f, -0.1f, -1.0f);
     glVertex3f(-1.0f, 1.0f, -1.0f);
-    
+
     // Z-axis (blue) - Maturity - moved to front corner
     glColor3f(0.0f, 0.0f, 1.0f);
     glVertex3f(-1.0f, -0.1f, -1.0f);
     glVertex3f(-1.0f, -0.1f, 1.0f);
     glEnd();
-    
+
     // Reset line width
     glLineWidth(1.0f);
-    
+
     // Draw tick marks on axes (adjusted for new position)
     glBegin(GL_LINES);
     // X-axis ticks
@@ -78,14 +81,14 @@ void renderAxes() {
         glVertex3f(x, -0.1f, -1.0f);
         glVertex3f(x, -0.15f, -1.0f);
     }
-    
+
     // Z-axis ticks
     glColor3f(0.0f, 0.0f, 1.0f);
     for (float z = -1.0f; z <= 1.0f; z += 0.2f) {
         glVertex3f(-1.0f, -0.1f, z);
         glVertex3f(-1.0f, -0.15f, z);
     }
-    
+
     // Y-axis ticks
     glColor3f(0.0f, 1.0f, 0.0f);
     for (float y = 0.0f; y <= 1.0f; y += 0.2f) {
@@ -93,87 +96,31 @@ void renderAxes() {
         glVertex3f(-1.05f, y, -1.0f);
     }
     glEnd();
-}
 
-// Render the surface single option price
-/*
-void renderSurface(const std::vector<std::vector<float>>& surface, float scale) {
-    int width = surface.size();
-    int height = surface[0].size();
-    
-    // Set up the viewport for our 3D surface
-    glViewport(400, 100, 700, 500);
-    glEnable(GL_DEPTH_TEST);
-    
-    // Set up projection
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-1.5, 1.5, -1.5, 1.5, -2.0, 2.0);
-    
-    // Set up modelview
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    
-    // Apply rotation
-    glRotatef(rotationX, 1.0f, 0.0f, 0.0f);
-    glRotatef(rotationY, 0.0f, 1.0f, 0.0f);
-    
-    // Simple rendering of the surface as lines
+    // Add special marker for S_0 on X-axis
+    glLineWidth(3.0f);
     glBegin(GL_LINES);
-    
-    // Draw lines along width
-    for (int i = 0; i < width; i++) {
-        for (int j = 0; j < height - 1; j++) {
-            float x1 = (float)i / width * 2.0f - 1.0f;
-            float z1 = (float)j / height * 2.0f - 1.0f;
-            float y1 = surface[i][j] * scale;
-            
-            float x2 = (float)i / width * 2.0f - 1.0f;
-            float z2 = (float)(j+1) / height * 2.0f - 1.0f;
-            float y2 = surface[i][j+1] * scale;
-            
-            // Color based on height
-            glColor3f(0.2f + y1, 0.4f, 0.6f + y1);
-            glVertex3f(x1, y1, z1);
-            glColor3f(0.2f + y2, 0.4f, 0.6f + y2);
-            glVertex3f(x2, y2, z2);
-        }
-    }
-    
-    // Draw lines along height
-    for (int j = 0; j < height; j++) {
-        for (int i = 0; i < width - 1; i++) {
-            float x1 = (float)i / width * 2.0f - 1.0f;
-            float z1 = (float)j / height * 2.0f - 1.0f;
-            float y1 = surface[i][j] * scale;
-            
-            float x2 = (float)(i+1) / width * 2.0f - 1.0f;
-            float z2 = (float)j / height * 2.0f - 1.0f;
-            float y2 = surface[i+1][j] * scale;
-            
-            // Color based on height
-            glColor3f(0.2f + y1, 0.4f, 0.6f + y1);
-            glVertex3f(x1, y1, z1);
-            glColor3f(0.2f + y2, 0.4f, 0.6f + y2);
-            glVertex3f(x2, y2, z2);
-        }
-    }
-    
+    glColor3f(1.0f, 1.0f, 0.0f); // Yellow color for S_0
+    // Normalize S_0 to [-1, 1] range
+    float x_pos = -1.0f + 2.0f * (S_0 - min_strike) / (max_strike - min_strike);
+    glVertex3f(x_pos, -0.1f, -1.0f);
+    glVertex3f(x_pos, -0.25f, -1.0f); // Make it longer than regular ticks
     glEnd();
-    
-    // Add labeled coordinate axes
-    renderAxes();
-    
-    
-    
-    // Reset viewport
-    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+
+    // Add markers for maturity points on Z-axis
+    glBegin(GL_LINES);
+    glColor3f(0.0f, 1.0f, 1.0f); // Cyan color for maturity points
+    for (double maturity : maturity_points) {
+        // Normalize maturity to [-1, 1] range
+        float z_pos = -1.0f + 2.0f * (maturity - min_maturity) / (max_maturity - min_maturity);
+        glVertex3f(-1.0f, -0.1f, z_pos);
+        glVertex3f(-1.0f, -0.25f, z_pos); // Make it longer than regular ticks
+    }
+    glEnd();
+    glLineWidth(1.0f);
 }
-*/
 
 // Modify rendering function to handle both surfaces
-// Helper function that just renders the surface data (no axes)
-// Helper function that just renders the surface data (no axes)
 void renderSurfaceData(const std::vector<std::vector<float>>& surface, float scale) {
     int width = surface.size();
     int height = surface[0].size();
@@ -225,7 +172,9 @@ void renderSurfaceData(const std::vector<std::vector<float>>& surface, float sca
 void renderBothSurfaces(
     const std::vector<std::vector<float>>& price_surface, 
     const std::vector<std::vector<float>>& iv_surface, 
-    float rotationX, float rotationY) {
+    float rotationX, float rotationY,
+    float S_0, const std::vector<double>& maturity_points,
+    float min_strike, float max_strike, float min_maturity, float max_maturity) {
     
     // Left viewport for price surface
     glViewport(100, 100, 500, 500);
@@ -242,7 +191,78 @@ void renderBothSurfaces(
     
     // Render price surface with its scale
     renderSurfaceData(price_surface, 0.01f);
-    renderAxes();
+    
+    // Draw the main axes with thicker lines
+    glLineWidth(2.0f);
+    glBegin(GL_LINES);
+    // X-axis (red) - Strike - moved to front corner
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(1.0f, -0.1f, -1.0f);
+    
+    // Y-axis (green) - Price - moved to front corner
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(-1.0f, 1.0f, -1.0f);
+    
+    // Z-axis (blue) - Maturity - moved to front corner
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(-1.0f, -0.1f, 1.0f);
+    glEnd();
+    
+    // Reset line width
+    glLineWidth(1.0f);
+    
+    // Draw tick marks on axes (adjusted for new position)
+    glBegin(GL_LINES);
+    // X-axis ticks
+    glColor3f(1.0f, 0.0f, 0.0f);
+    for (float x = -1.0f; x <= 1.0f; x += 0.2f) {
+        glVertex3f(x, -0.1f, -1.0f);
+        glVertex3f(x, -0.15f, -1.0f);
+    }
+    
+    // Z-axis ticks
+    glColor3f(0.0f, 0.0f, 1.0f);
+    for (float z = -1.0f; z <= 1.0f; z += 0.2f) {
+        glVertex3f(-1.0f, -0.1f, z);
+        glVertex3f(-1.0f, -0.15f, z);
+    }
+    
+    // Y-axis ticks
+    glColor3f(0.0f, 1.0f, 0.0f);
+    for (float y = 0.0f; y <= 1.0f; y += 0.2f) {
+        glVertex3f(-1.0f, y, -1.0f);
+        glVertex3f(-1.05f, y, -1.0f);
+    }
+    glEnd();
+    
+    // Add special marker for S_0 on X-axis
+    glLineWidth(3.0f);
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 1.0f, 0.0f); // Yellow color for S_0
+    // Normalize S_0 to [-1, 1] range
+    float x_pos = -1.0f + 2.0f * (S_0 - min_strike) / (max_strike - min_strike);
+    // Clamp to valid range
+    x_pos = std::min(std::max(x_pos, -1.0f), 1.0f);
+    glVertex3f(x_pos, -0.1f, -1.0f);
+    glVertex3f(x_pos, -0.25f, -1.0f); // Make it longer than regular ticks
+    glEnd();
+    
+    // Add markers for maturity points on Z-axis
+    glBegin(GL_LINES);
+    glColor3f(0.0f, 1.0f, 1.0f); // Cyan color for maturity points
+    for (double maturity : maturity_points) {
+        // Normalize maturity to [-1, 1] range
+        float z_pos = -1.0f + 2.0f * (maturity - min_maturity) / (max_maturity - min_maturity);
+        // Clamp to valid range
+        z_pos = std::min(std::max(z_pos, -1.0f), 1.0f);
+        glVertex3f(-1.0f, -0.1f, z_pos);
+        glVertex3f(-1.0f, -0.25f, z_pos); // Make it longer than regular ticks
+    }
+    glEnd();
+    glLineWidth(1.0f);
     
     // Right viewport for implied vol surface
     glViewport(600, 100, 500, 500);
@@ -259,7 +279,74 @@ void renderBothSurfaces(
     
     // Render IV surface with its scale
     renderSurfaceData(iv_surface, 2.0f);
-    renderAxes();
+    
+    // Draw the main axes with thicker lines (for right surface)
+    glLineWidth(2.0f);
+    glBegin(GL_LINES);
+    // X-axis (red) - Strike - moved to front corner
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(1.0f, -0.1f, -1.0f);
+    
+    // Y-axis (green) - Price - moved to front corner
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(-1.0f, 1.0f, -1.0f);
+    
+    // Z-axis (blue) - Maturity - moved to front corner
+    glColor3f(0.0f, 0.0f, 1.0f);
+    glVertex3f(-1.0f, -0.1f, -1.0f);
+    glVertex3f(-1.0f, -0.1f, 1.0f);
+    glEnd();
+    
+    // Reset line width
+    glLineWidth(1.0f);
+    
+    // Draw tick marks on axes (adjusted for new position)
+    glBegin(GL_LINES);
+    // X-axis ticks
+    glColor3f(1.0f, 0.0f, 0.0f);
+    for (float x = -1.0f; x <= 1.0f; x += 0.2f) {
+        glVertex3f(x, -0.1f, -1.0f);
+        glVertex3f(x, -0.15f, -1.0f);
+    }
+    
+    // Z-axis ticks
+    glColor3f(0.0f, 0.0f, 1.0f);
+    for (float z = -1.0f; z <= 1.0f; z += 0.2f) {
+        glVertex3f(-1.0f, -0.1f, z);
+        glVertex3f(-1.0f, -0.15f, z);
+    }
+    
+    // Y-axis ticks
+    glColor3f(0.0f, 1.0f, 0.0f);
+    for (float y = 0.0f; y <= 1.0f; y += 0.2f) {
+        glVertex3f(-1.0f, y, -1.0f);
+        glVertex3f(-1.05f, y, -1.0f);
+    }
+    glEnd();
+    
+    // Add special marker for S_0 on X-axis (right surface)
+    glLineWidth(3.0f);
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 1.0f, 0.0f); // Yellow color for S_0
+    glVertex3f(x_pos, -0.1f, -1.0f);
+    glVertex3f(x_pos, -0.25f, -1.0f); // Make it longer than regular ticks
+    glEnd();
+    
+    // Add markers for maturity points on Z-axis (right surface)
+    glBegin(GL_LINES);
+    glColor3f(0.0f, 1.0f, 1.0f); // Cyan color for maturity points
+    for (double maturity : maturity_points) {
+        // Normalize maturity to [-1, 1] range
+        float z_pos = -1.0f + 2.0f * (maturity - min_maturity) / (max_maturity - min_maturity);
+        // Clamp to valid range
+        z_pos = std::min(std::max(z_pos, -1.0f), 1.0f);
+        glVertex3f(-1.0f, -0.1f, z_pos);
+        glVertex3f(-1.0f, -0.25f, z_pos); // Make it longer than regular ticks
+    }
+    glEnd();
+    glLineWidth(1.0f);
     
     // Reset viewport to full window
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
@@ -336,8 +423,50 @@ int main() {
             h_calibration_points(i) = calibration_points[i];
         }
         Kokkos::deep_copy(d_calibration_points, h_calibration_points);
+
+        /*
         
-        // Create solver arrays
+        Init the divident dates and pass them to the gpu
+        
+        */
+         
+        std::vector<double> dividend_dates = {0.2, 1.4, 2.6, 3.8};
+        std::vector<double> dividend_amounts = {0.10, 0.10, 0.10, 0.10};  // $0.10 per quarter
+        std::vector<double> dividend_percentages = {0.0005, 0.0005, 0.0005, 0.0005};  // 0.05% per quarter
+        
+        /*
+        std::vector<double> dividend_dates = {maturities[5]};
+        std::vector<double> dividend_amounts = {4};  // $4 per quarter
+        std::vector<double> dividend_percentages = {0.1};  // 10% per quarter
+        */
+
+        // On host side, create views for dividend data
+        Kokkos::View<double*> d_dividend_dates("dividend_dates", dividend_dates.size());
+        Kokkos::View<double*> d_dividend_amounts("dividend_amounts", dividend_amounts.size());
+        Kokkos::View<double*> d_dividend_percentages("dividend_percentages", dividend_percentages.size());
+
+        // Copy dividend data to device
+        auto h_dividend_dates = Kokkos::create_mirror_view(d_dividend_dates);
+        auto h_dividend_amounts = Kokkos::create_mirror_view(d_dividend_amounts);
+        auto h_dividend_percentages = Kokkos::create_mirror_view(d_dividend_percentages);
+
+        for(size_t i = 0; i < dividend_dates.size(); i++) {
+            h_dividend_dates(i) = dividend_dates[i];
+            h_dividend_amounts(i) = dividend_amounts[i];
+            h_dividend_percentages(i) = dividend_percentages[i];
+        }
+
+        Kokkos::deep_copy(d_dividend_dates, h_dividend_dates);
+        Kokkos::deep_copy(d_dividend_amounts, h_dividend_amounts);
+        Kokkos::deep_copy(d_dividend_percentages, h_dividend_percentages);
+
+        const int num_dividends = dividend_dates.size();
+        
+        /*
+        
+        Create the solver arrays
+        
+        */
         using Device = Kokkos::DefaultExecutionSpace;
         Kokkos::View<Device_A0_heston<Device>*> A0_solvers("A0_solvers", width * height);
         Kokkos::View<Device_A1_heston<Device>*> A1_solvers("A1_solvers", width * height);
@@ -536,7 +665,8 @@ int main() {
                 //Reset initial condition
                 Kokkos::deep_copy(workspace.U, U_0); 
                 
-                // Compute option prices using the Heston PDE solver
+                // Compute European Call option prices 
+                /*
                 compute_base_prices_multi_maturity(
                     S_0, v0, r_d, r_f, 
                     rho, sigma, kappa, eta, 
@@ -547,7 +677,29 @@ int main() {
                     bounds_d, deviceGrids, 
                     workspace, base_prices, policy
                 );
+                */
 
+                // Compute American Call option prices on a dividend paying stock
+                compute_base_prices_multi_maturity_american_dividends(
+                    S_0, v0,
+                    r_d, r_f,
+                    rho, sigma, kappa, eta,
+                    m1, m2, total_size, theta,
+                    d_calibration_points,
+                    total_size,
+                    A0_solvers, A1_solvers, A2_solvers,
+                    bounds_d, deviceGrids,
+                    U_0,
+                    workspace,
+                    num_dividends,
+                    d_dividend_dates,
+                    d_dividend_amounts,
+                    d_dividend_percentages,
+                    base_prices,
+                    policy
+                );
+
+                //Compute the Implied Vol-surface to the computed prices
                 compute_implied_vol_surface(
                     S_0, r_d,
                     width, height,
@@ -577,10 +729,13 @@ int main() {
                 }
             }
 
-            //rendering both surfaces at the same time
+            //Renders both surfaces next to each other
             //renderBothSurfaces(surface, iv_surface, rotationX, rotationY);
-            // In your main loop:
-            renderBothSurfaces(surface, iv_surface, rotationX, rotationY);
+
+            //Renders surfaces with S_0 and dividend dates marked
+            renderBothSurfaces(surface, iv_surface, rotationX, rotationY, 
+                S_0, dividend_dates, 
+                min_strike, max_strike, min_maturity, max_maturity);
 
             
             // Update your axis information windows to show two sets of labels
