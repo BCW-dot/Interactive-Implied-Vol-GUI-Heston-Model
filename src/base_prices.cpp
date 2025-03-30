@@ -55,7 +55,7 @@ void compute_base_prices_multi_maturity(
 
             grid_i.rebuild_variance_views(V_0, 5.0, 5.0/500, team);
             
-            bounds_d(instance).initialize(grid_i, team);
+            bounds_d(instance).initialize(grid_i, r_d, r_f, team);
             auto bounds = bounds_d(instance);
             
             A0_solvers(instance).build_matrix(grid_i, rho, sigma, team);
@@ -154,7 +154,7 @@ void compute_base_prices_multi_maturity_american_dividends(
 
             grid_i.rebuild_variance_views(V_0, 5.0, 5.0/500, team);
             
-            bounds_d(instance).initialize(grid_i, team);
+            bounds_d(instance).initialize(grid_i, r_d, r_f, team);
             auto bounds = bounds_d(instance);
             
             A0_solvers(instance).build_matrix(grid_i, rho, sigma, team);

@@ -31,7 +31,7 @@ void processInput(GLFWwindow* window);
 
 // Window settings
 const unsigned int SCR_WIDTH = 1200;
-const unsigned int SCR_HEIGHT = 800;
+const unsigned int SCR_HEIGHT = 1000;
 
 // Model parameters with default values
 float kappa = 1.5f;
@@ -39,6 +39,9 @@ float eta = 0.04f;
 float sigma = 0.3f;
 float rho = -0.9f;
 float v0 = 0.04f;
+
+float r_d = 0.025;
+float q = 0.0;
 
 // View rotation
 float rotationX = 30.0f;
@@ -451,8 +454,6 @@ int main() {
     {
         // Market parameters
         const double S_0 = 100.0;
-        const double r_d = 0.025;
-        const double r_f = 0.0;
         const double theta = 0.8;
         
         // Grid dimensions - keep small for interactive performance
@@ -461,17 +462,17 @@ int main() {
         const int total_size = (m1+1) * (m2+1);
         
         // Surface dimensions
-        const int width = 50;  // Number of strikes
-        const int height = 20; // Number of maturities
+        const int width = 60;  // Number of strikes
+        const int height = 40; // Number of maturities
 
         // Actual data ranges for visualization
-        float min_strike = S_0 * 0.5f;
-        float max_strike = S_0 * 1.3f;
-        float min_maturity = 0.25f;
-        float max_maturity = 0.25f + (height - 1) * 0.25f; // or whatever your actual range is
+        float min_strike = S_0 * 0.5f; //50% of spot
+        float max_strike = S_0 * 1.3f; //130% of spot
+        float min_maturity = 0.25f; //3 month maturity
+        float max_maturity = (0.25f + (height - 1) * 0.25f) * 0.5; //3 monnths + 20/4 months
 
-        float max_price = 0.5f * min_strike;  // Set a reasonable maximum or compute from data
-        float max_iv = 1.0f;      // Set a reasonable maximum or compute from data
+        float max_price = 0.5f * min_strike;  // Set a reasonable maximum or compute from data, not needed for computations
+        //float max_iv = 1.0f;      // Set a reasonable maximum or compute from data, not needed for computations
         
         // Create calibration points for surface
         std::vector<CalibrationPoint> calibration_points;
@@ -495,7 +496,7 @@ int main() {
         int idx = 0;
         for(int j = 0; j < height; j++) {
             double T_m = maturities[j];
-            int N_m = std::max(20, static_cast<int>(T_m * 20));
+            int N_m = 20;//std::max(20, static_cast<int>(T_m * 20));
             double dt_m = T_m / N_m;
             
             for(int i = 0; i < width; i++) {
@@ -522,10 +523,21 @@ int main() {
         Init the divident dates and pass them to the gpu
         
         */
-         
         std::vector<double> dividend_dates = {0.2, 1.4, 2.6, 3.8};
-        std::vector<double> dividend_amounts = {0.10, 0.10, 0.10, 0.10};  // $0.10 per quarter
+        std::vector<double> dividend_amounts = {0.70, 0.70, 0.70, 0.70};  // $0.10 per quarter
         std::vector<double> dividend_percentages = {0.0005, 0.0005, 0.0005, 0.0005};  // 0.05% per quarter
+        
+        /*
+        std::vector<double> dividend_dates = {0.2, 0.4, 0.6, 0.8,
+                                                1.2, 1.4, 1.6, 1.8,
+                                                2.2, 2.4, 2.6, 2.8};
+        std::vector<double> dividend_amounts = {0.10, 0.10, 0.10, 0.10,
+                                                0.10, 0.10, 0.10, 0.10,
+                                                0.10, 0.10, 0.10, 0.10};  // $0.10 per quarter
+        std::vector<double> dividend_percentages = {0.0005, 0.0005, 0.0005, 0.0005,
+                                                    0.0005, 0.0005, 0.0005, 0.0005,
+                                                    0.0005, 0.0005, 0.0005, 0.0005};  // 0.05% per quarter
+        */
         
         /*
         std::vector<double> dividend_dates = {maturities[5]};
@@ -587,7 +599,7 @@ int main() {
         for(const auto& point : calibration_points) {
             int idx = point.global_index;
             h_bounds(idx) = Device_BoundaryConditions<Device>(
-                m1, m2, r_d, r_f, point.time_steps, point.delta_t);
+                m1, m2, r_d, q, point.time_steps, point.delta_t);
         }
         Kokkos::deep_copy(bounds_d, h_bounds);
         
@@ -605,6 +617,7 @@ int main() {
             auto h_Delta_v = Kokkos::create_mirror_view(hostGrids[idx].device_Delta_v);
             
             Grid tempGrid(m1, 8*K, S_0, K, K/5, m2, 5.0, v0, 5.0/500);
+            //Grid tempGrid(m1, 5*K, S_0, K, K/5, m2, 3.0, v0, 3.0/500);
             
             for(int j = 0; j <= m1; j++) h_Vec_s(j) = tempGrid.Vec_s[j];
             for(int j = 0; j <= m2; j++) h_Vec_v(j) = tempGrid.Vec_v[j];
@@ -693,7 +706,9 @@ int main() {
 
         // Main loop
         bool paramsChanged = true;  // Force computation on first frame
-        static int totalPdesSolved = 0;
+        static int totalPdesSolved = 0; //For PDE counter tracking
+        float max_surface = 0; //Display highest option price
+        float max_iv_surface = 0; //Display highest implied vol value
         
         std::cout << "starting render" << std::endl;
         while (!glfwWindowShouldClose(window)) {
@@ -720,6 +735,10 @@ int main() {
             if (ImGui::SliderFloat("Sigma", &sigma, 0.01f, 1.0f)) paramsChanged = true;
             if (ImGui::SliderFloat("Rho", &rho, -1.0f, 1.0f)) paramsChanged = true;
             if (ImGui::SliderFloat("V0", &v0, 0.01f, 1.5f)) paramsChanged = true;
+
+            //added a r_d slider, r_d is still constant for each PDE solve
+            if (ImGui::SliderFloat("r_d", &r_d, 0.001f, 0.2f)) paramsChanged = true;
+            if (ImGui::SliderFloat("q", &q, 0.00f, 0.2f)) paramsChanged = true;
             
             ImGui::Separator();
             
@@ -730,8 +749,8 @@ int main() {
             
             // Display current values
             ImGui::Separator();
-            ImGui::Text("Current values: kappa=%.2f, eta=%.4f, sigma=%.2f, rho=%.2f, v0=%.4f", 
-                        kappa, eta, sigma, rho, v0);
+            ImGui::Text("Current values: kappa=%.2f, eta=%.4f, sigma=%.2f, rho=%.2f, v0=%.4f, r_d=%.4f, q=%.4f", 
+                        kappa, eta, sigma, rho, v0, r_d, q);
 
             /*
             ImGui::Text("PDEs solved: %d", totalPdesSolved);
@@ -757,11 +776,13 @@ int main() {
             if (paramsChanged) {
                 //Reset initial condition
                 Kokkos::deep_copy(workspace.U, U_0); 
+                max_surface = 0; 
+                max_iv_surface = 0; 
                 
                 // Compute European Call option prices 
-                
+                /*
                 compute_base_prices_multi_maturity(
-                    S_0, v0, r_d, r_f, 
+                    S_0, v0, r_d, q, 
                     rho, sigma, kappa, eta, 
                     m1, m2, total_size, theta, 
                     d_calibration_points, 
@@ -770,13 +791,14 @@ int main() {
                     bounds_d, deviceGrids, 
                     workspace, base_prices, policy
                 );
+                */
                 
 
                 // Compute American Call option prices on a dividend paying stock
-                /*
+                
                 compute_base_prices_multi_maturity_american_dividends(
                     S_0, v0,
-                    r_d, r_f,
+                    r_d, q,
                     rho, sigma, kappa, eta,
                     m1, m2, total_size, theta,
                     d_calibration_points,
@@ -792,7 +814,7 @@ int main() {
                     base_prices,
                     policy
                 );
-                */
+                
 
                 //Compute the Implied Vol-surface to the computed prices
                 compute_implied_vol_surface(
@@ -819,29 +841,32 @@ int main() {
                     for(int j = 0; j < height; j++) {
                         int idx = j * width + i;
                         surface[i][j] = static_cast<float>(h_prices(idx));
+                        max_surface = std::max(max_surface, surface[i][j]);
+
                         iv_surface[i][j] = static_cast<float>(h_implied_vols(idx));
+                        max_iv_surface = std::max(max_iv_surface, iv_surface[i][j]);
                     }
                 }
             }
 
             //Renders both surfaces next to each other
-            renderBothSurfaces(surface, iv_surface, rotationX, rotationY);
+            //renderBothSurfaces(surface, iv_surface, rotationX, rotationY);
 
             //Renders surfaces with S_0 and dividend dates marked
-            //renderBothSurfaces(surface, iv_surface, rotationX, rotationY, S_0, dividend_dates, min_strike, max_strike, min_maturity, max_maturity);
+            renderBothSurfaces(surface, iv_surface, rotationX, rotationY, S_0, dividend_dates, min_strike, max_strike, min_maturity, max_maturity);
 
             
             // Update your axis information windows to show two sets of labels
             ImGui::Begin("Price Surface Axes");
             ImGui::Text("Red axis (X): Strike (%.0f-%.0f)", min_strike, max_strike);
             ImGui::Text("Blue axis (Y): Maturity (%.2f-%.2f years)", min_maturity, max_maturity);
-            ImGui::Text("Green axis (Z): Option Price (0-%.1f)", max_price); 
+            ImGui::Text("Green axis (Z): Option Price (0-%.1f)", max_surface); 
             ImGui::End();
 
             ImGui::Begin("IV Surface Axes");
             ImGui::Text("Red axis (X): Strike (%.0f-%.0f)", min_strike, max_strike);
             ImGui::Text("Blue axis (Y): Maturity (%.2f-%.2f years)", min_maturity, max_maturity);
-            ImGui::Text("Green axis (Z): Implied Volatility (0-1)");
+            ImGui::Text("Green axis (Z): Implied Volatility (0-%.2f)", max_iv_surface);
             ImGui::End();
             
 

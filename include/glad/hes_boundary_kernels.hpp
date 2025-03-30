@@ -39,6 +39,7 @@ struct Device_BoundaryConditions {
     template<class GridType>
     KOKKOS_FUNCTION
     void initialize(const GridType& grid,
+                    const double r_d, const double r_f,
                    const Kokkos::TeamPolicy<>::member_type& team) {
         // Zero initialization
         Kokkos::parallel_for(Kokkos::TeamThreadRange(team, m_),
