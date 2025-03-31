@@ -53,8 +53,8 @@ float rotationY = 45.0f;
 
 
 // Add coordinate axes with better visual indicators
-//for european call without indicators
-void renderAxes() {
+//for european call with S_0 indicator
+void renderAxes(float S_0, float min_strike, float max_strike) {
     // Draw the main axes with thicker lines
     glLineWidth(2.0f);
     glBegin(GL_LINES);
@@ -100,7 +100,19 @@ void renderAxes() {
         glVertex3f(-1.05f, y, -1.0f);
     }
     glEnd();
+    
+    // Add special marker for S_0 on X-axis
+    glLineWidth(3.0f);
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 1.0f, 0.0f); // Yellow color for S_0
+    // Normalize S_0 to [-1, 1] range
+    float x_pos = -1.0f + 2.0f * (S_0 - min_strike) / (max_strike - min_strike);
+    glVertex3f(x_pos, -0.1f, -1.0f);
+    glVertex3f(x_pos, -0.25f, -1.0f); // Make it longer than regular ticks
+    glEnd();
+    glLineWidth(1.0f);
 }
+
 
 // Modified function to include indicators
 //for american dividneds with indicators
@@ -412,6 +424,7 @@ void renderBothSurfaces(
 void renderBothSurfaces(
     const std::vector<std::vector<float>>& price_surface, 
     const std::vector<std::vector<float>>& iv_surface, 
+    float S_0, float min_strike, float max_strike,
     float rotationX, float rotationY) {
     
     // Left viewport for price surface
@@ -429,7 +442,7 @@ void renderBothSurfaces(
     
     // Render price surface with its scale
     renderSurfaceData(price_surface, 0.01f);
-    renderAxes();
+    renderAxes(S_0, min_strike, max_strike);
     
     // Right viewport for implied vol surface
     glViewport(600, 100, 500, 500);
@@ -446,7 +459,7 @@ void renderBothSurfaces(
     
     // Render IV surface with its scale
     renderSurfaceData(iv_surface, 2.0f);
-    renderAxes();
+    renderAxes(S_0, min_strike, max_strike);
     
     // Reset viewport to full window
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
@@ -529,6 +542,7 @@ int main() {
         std::vector<double> dividend_dates = {0.5, 1.4, 2.6, 3.0};
         std::vector<double> dividend_amounts = {0.70, 0.70, 0.70, 0.70};  // $0.10 per quarter
         std::vector<double> dividend_percentages = {0.0005, 0.0005, 0.0005, 0.0005};  // 0.05% per quarter
+        
         
         /*
         std::vector<double> dividend_dates = {0.2, 0.4, 0.6, 0.8,
@@ -773,25 +787,6 @@ int main() {
 
             // Compute new surface if parameters changed
             if (paramsChanged) {
-                //Reset initial condition
-                /*
-                for(const auto& point : calibration_points) {
-                    int idx = point.global_index;
-                    double K = point.strike;
-                    
-                    auto h_Vec_s = Kokkos::create_mirror_view(hostGrids[idx].device_Vec_s);
-                    Kokkos::deep_copy(h_Vec_s, hostGrids[idx].device_Vec_s);
-                    
-                    for(int j = 0; j <= m2; j++) {
-                        for(int i = 0; i <= m1; i++) {
-                            h_U_0(idx, i + j*(m1+1)) = std::max(h_Vec_s(i) - K, 0.0);
-                        }
-                    }
-                }
-                Kokkos::deep_copy(U_0, h_U_0);
-                
-                Kokkos::deep_copy(workspace.U, U_0); 
-                */
                 max_surface = 0; 
                 max_iv_surface = 0; 
                 
@@ -809,8 +804,6 @@ int main() {
                 );
                 */
                 
-                
-
                 // Compute American Call option prices on a dividend paying stock
                 
                 compute_base_prices_multi_maturity_american_dividends(
@@ -831,7 +824,6 @@ int main() {
                     base_prices,
                     policy
                 );
-                
                 
 
                 //Compute the Implied Vol-surface to the computed prices
@@ -868,9 +860,10 @@ int main() {
             }
 
             //Renders both surfaces next to each other European Call
-            //renderBothSurfaces(surface, iv_surface, rotationX, rotationY);
+            //renderBothSurfaces(surface, iv_surface, S_0, min_strike, max_strike, rotationX, rotationY);
 
-            //Renders surfaces with S_0 and dividend dates marked
+
+            //Renders surfaces with S_0 and dividend dates marked for american call with dividends
             renderBothSurfaces(surface, iv_surface, rotationX, rotationY, S_0, dividend_dates, min_strike, max_strike, min_maturity, max_maturity);
 
             
@@ -886,11 +879,6 @@ int main() {
             ImGui::Text("Blue axis (Y): Maturity (%.2f-%.2f years)", min_maturity, max_maturity);
             ImGui::Text("Green axis (Z): Implied Volatility (0-%.2f)", max_iv_surface);
             ImGui::End();
-            
-
-            // Render the surface individually
-            //renderSurface(surface, 0.05f);  // Scale to make heights visible
-            //renderSurface(iv_surface, 1.0f);
 
             // Render ImGui
             ImGui::Render();
