@@ -461,14 +461,14 @@ int main() {
         const int total_size = (m1+1) * (m2+1);
         
         // Surface dimensions
-        const int width = 50;  // Number of strikes
+        const int width = 60;  // Number of strikes
         const int height = 20; // Number of maturities
 
         // Actual data ranges for visualization
         float min_strike = S_0 * 0.5f;
         float max_strike = S_0 * 1.3f;
         float min_maturity = 0.25f;
-        float max_maturity = 0.25f + (height - 1) * 0.25f; // or whatever your actual range is
+        float max_maturity = 5.0f;//0.25f + (height - 1) * 0.25f; // or whatever your actual range is
 
         float max_price = 0.5f * min_strike;  // Set a reasonable maximum or compute from data
         float max_iv = 1.0f;      // Set a reasonable maximum or compute from data
@@ -517,21 +517,13 @@ int main() {
         }
         Kokkos::deep_copy(d_calibration_points, h_calibration_points);
 
-        /*
         
-        Init the divident dates and pass them to the gpu
-        
-        */
          
         std::vector<double> dividend_dates = {0.2, 1.4, 2.6, 3.8};
         std::vector<double> dividend_amounts = {0.10, 0.10, 0.10, 0.10};  // $0.10 per quarter
         std::vector<double> dividend_percentages = {0.0005, 0.0005, 0.0005, 0.0005};  // 0.05% per quarter
         
-        /*
-        std::vector<double> dividend_dates = {maturities[5]};
-        std::vector<double> dividend_amounts = {4};  // $4 per quarter
-        std::vector<double> dividend_percentages = {0.1};  // 10% per quarter
-        */
+        
 
         // On host side, create views for dividend data
         Kokkos::View<double*> d_dividend_dates("dividend_dates", dividend_dates.size());
@@ -555,11 +547,7 @@ int main() {
 
         const int num_dividends = dividend_dates.size();
         
-        /*
         
-        Create the solver arrays
-        
-        */
         using Device = Kokkos::DefaultExecutionSpace;
         Kokkos::View<Device_A0_heston<Device>*> A0_solvers("A0_solvers", width * height);
         Kokkos::View<Device_A1_heston<Device>*> A1_solvers("A1_solvers", width * height);
@@ -664,9 +652,11 @@ int main() {
         }
 
         // Important: Use compatibility profile
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);  // Lower version
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);  // Start hidden
 
         // Create window
         GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Heston Surface Explorer", NULL, NULL);
@@ -675,16 +665,19 @@ int main() {
             glfwTerminate();
             return -1;
         }
+
+        // Make the window visible after successful creation
+        glfwShowWindow(window);
         glfwMakeContextCurrent(window);
         glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-        // Setup ImGui
+        // Update ImGui initialization for older OpenGL
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO(); (void)io;
         ImGui::StyleColorsDark();
         ImGui_ImplGlfw_InitForOpenGL(window, true);
-        ImGui_ImplOpenGL3_Init("#version 330");
+        ImGui_ImplOpenGL3_Init("#version 120");  // Use older shader version
 
         // Surface data for visualization
         std::vector<std::vector<float>> surface(width, std::vector<float>(height));
@@ -733,15 +726,7 @@ int main() {
             ImGui::Text("Current values: kappa=%.2f, eta=%.4f, sigma=%.2f, rho=%.2f, v0=%.4f", 
                         kappa, eta, sigma, rho, v0);
 
-            /*
-            ImGui::Text("PDEs solved: %d", totalPdesSolved);
-            ImGui::SameLine();
-            int iconCount = std::min(20, width * height / 10); // Limit icons to 20
-            for (int i = 0; i < iconCount; i++) {
-                ImGui::SameLine(0.0f, 5.0f);
-                ImGui::Text("⚙️"); // Gear icon to represent calculations
-            }
-            */
+            
 
             // Add the PDE counter display
             ImGui::Text("PDEs solved: %d (current: %d)", totalPdesSolved, width * height);
@@ -793,6 +778,7 @@ int main() {
                     policy
                 );
                 */
+                
 
                 //Compute the Implied Vol-surface to the computed prices
                 compute_implied_vol_surface(
@@ -878,6 +864,7 @@ void processInput(GLFWwindow* window) {
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
 }
+
 
 
 

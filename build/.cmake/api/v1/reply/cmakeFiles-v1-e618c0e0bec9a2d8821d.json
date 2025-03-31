@@ -1,0 +1,263 @@
+{
+	"inputs" : 
+	[
+		{
+			"path" : "CMakeLists.txt"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "build/CMakeFiles/3.27.6/CMakeSystem.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeSystemSpecificInitialize.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/Platform/Linux-Initialize.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "build/CMakeFiles/3.27.6/CMakeCXXCompiler.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeSystemSpecificInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeGenericSystem.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeInitializeConfigs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/Platform/Linux.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/Platform/UnixPaths.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeCXXInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeLanguageInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/Compiler/GNU-CXX.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/Platform/Linux-GNU-CXX.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/Platform/Linux-GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-install/lib64/cmake/Kokkos/KokkosConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-install/lib64/cmake/Kokkos/KokkosConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/FindCUDAToolkit.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/FindThreads.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CheckLibraryExists.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CheckIncludeFileCXX.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CheckCXXSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/Internal/CheckSourceCompiles.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/FindOpenMP.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeParseImplicitLinkInfo.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-install/lib64/cmake/Kokkos/KokkosTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-install/lib64/cmake/Kokkos/KokkosTargets-release.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-install/lib64/cmake/Kokkos/KokkosConfigCommon.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-kernels-install/lib64/cmake/KokkosKernels/KokkosKernelsConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-kernels-install/lib64/cmake/KokkosKernels/KokkosKernelsConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-install/lib64/cmake/Kokkos/KokkosConfigVersion.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-install/lib64/cmake/Kokkos/KokkosConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeFindDependencyMacro.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-install/lib64/cmake/Kokkos/KokkosTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-install/lib64/cmake/Kokkos/KokkosConfigCommon.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-kernels-install/lib64/cmake/KokkosKernels/KokkosKernelsTargets.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/home/bcwilkens/software/kokkos-kernels-install/lib64/cmake/KokkosKernels/KokkosKernelsTargets-release.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "build/CMakeFiles/3.27.6/CMakeCUDACompiler.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeCUDAInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/Compiler/NVIDIA-CUDA.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/opt/software/easybuild/amd/software/CMake/3.27.6-GCCcore-13.2.0/share/cmake-3.27/Modules/CMakeCommonLanguageInclude.cmake"
+		}
+	],
+	"kind" : "cmakeFiles",
+	"paths" : 
+	{
+		"build" : "/home/bcwilkens/interactive_impl_vol/build",
+		"source" : "/home/bcwilkens/interactive_impl_vol"
+	},
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}

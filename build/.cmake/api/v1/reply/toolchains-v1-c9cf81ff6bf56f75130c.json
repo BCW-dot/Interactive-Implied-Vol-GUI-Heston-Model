@@ -1,0 +1,178 @@
+{
+	"kind" : "toolchains",
+	"toolchains" : 
+	[
+		{
+			"compiler" : 
+			{
+				"id" : "NVIDIA",
+				"implicit" : 
+				{
+					"includeDirectories" : 
+					[
+						"/opt/software/easybuild/amd/software/Brotli/1.1.0-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/OpenSSL/1.1/include",
+						"/opt/software/easybuild/amd/software/libarchive/3.7.2-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/XZ/5.4.4-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/cURL/8.3.0-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/bzip2/1.0.8-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/ncurses/6.4-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/binutils/2.40-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/zlib/1.2.13-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/CUDA/12.6.0/nvvm/include",
+						"/opt/software/easybuild/amd/software/CUDA/12.6.0/extras/CUPTI/include",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/include/c++/13.2.0",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/include/c++/13.2.0/x86_64-pc-linux-gnu",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/include/c++/13.2.0/backward",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/lib/gcc/x86_64-pc-linux-gnu/13.2.0/include",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/include",
+						"/usr/include"
+					],
+					"linkDirectories" : 
+					[
+						"/opt/software/easybuild/amd/software/CUDA/12.6.0/targets/x86_64-linux/lib/stubs",
+						"/opt/software/easybuild/amd/software/CUDA/12.6.0/targets/x86_64-linux/lib",
+						"/opt/software/easybuild/amd/software/Brotli/1.1.0-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/OpenSSL/1.1/lib64",
+						"/opt/software/easybuild/amd/software/libarchive/3.7.2-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/XZ/5.4.4-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/cURL/8.3.0-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/bzip2/1.0.8-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/ncurses/6.4-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/binutils/2.40-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/zlib/1.2.13-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/CUDA/12.6.0/stubs/lib64",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/lib/gcc/x86_64-pc-linux-gnu/13.2.0",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/lib64",
+						"/lib64",
+						"/usr/lib64",
+						"/opt/software/easybuild/amd/software/Brotli/1.1.0-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/OpenSSL/1.1/lib",
+						"/opt/software/easybuild/amd/software/libarchive/3.7.2-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/XZ/5.4.4-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/cURL/8.3.0-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/bzip2/1.0.8-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/ncurses/6.4-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/binutils/2.40-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/zlib/1.2.13-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/CUDA/12.6.0/lib",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/lib"
+					],
+					"linkFrameworkDirectories" : [],
+					"linkLibraries" : 
+					[
+						"stdc++",
+						"m",
+						"gcc_s",
+						"gcc",
+						"c",
+						"gcc_s",
+						"gcc"
+					]
+				},
+				"path" : "/opt/software/easybuild/amd/software/CUDA/12.6.0/bin/nvcc",
+				"version" : "12.6.20"
+			},
+			"language" : "CUDA",
+			"sourceFileExtensions" : 
+			[
+				"cu"
+			]
+		},
+		{
+			"compiler" : 
+			{
+				"id" : "GNU",
+				"implicit" : 
+				{
+					"includeDirectories" : 
+					[
+						"/opt/software/easybuild/amd/software/Brotli/1.1.0-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/OpenSSL/1.1/include",
+						"/opt/software/easybuild/amd/software/libarchive/3.7.2-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/XZ/5.4.4-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/cURL/8.3.0-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/bzip2/1.0.8-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/ncurses/6.4-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/binutils/2.40-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/zlib/1.2.13-GCCcore-13.2.0/include",
+						"/opt/software/easybuild/amd/software/CUDA/12.6.0/nvvm/include",
+						"/opt/software/easybuild/amd/software/CUDA/12.6.0/extras/CUPTI/include",
+						"/opt/software/easybuild/amd/software/CUDA/12.6.0/include",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/include/c++/13.2.0",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/include/c++/13.2.0/x86_64-pc-linux-gnu",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/include/c++/13.2.0/backward",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/lib/gcc/x86_64-pc-linux-gnu/13.2.0/include",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/include",
+						"/usr/include"
+					],
+					"linkDirectories" : 
+					[
+						"/opt/software/easybuild/amd/software/Brotli/1.1.0-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/OpenSSL/1.1/lib64",
+						"/opt/software/easybuild/amd/software/libarchive/3.7.2-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/XZ/5.4.4-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/cURL/8.3.0-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/bzip2/1.0.8-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/ncurses/6.4-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/binutils/2.40-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/zlib/1.2.13-GCCcore-13.2.0/lib64",
+						"/opt/software/easybuild/amd/software/CUDA/12.6.0/stubs/lib64",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/lib/gcc/x86_64-pc-linux-gnu/13.2.0",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/lib64",
+						"/lib64",
+						"/usr/lib64",
+						"/opt/software/easybuild/amd/software/Brotli/1.1.0-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/OpenSSL/1.1/lib",
+						"/opt/software/easybuild/amd/software/libarchive/3.7.2-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/XZ/5.4.4-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/cURL/8.3.0-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/bzip2/1.0.8-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/ncurses/6.4-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/binutils/2.40-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/zlib/1.2.13-GCCcore-13.2.0/lib",
+						"/opt/software/easybuild/amd/software/CUDA/12.6.0/lib",
+						"/opt/software/easybuild/amd/software/GCCcore/13.2.0/lib"
+					],
+					"linkFrameworkDirectories" : [],
+					"linkLibraries" : 
+					[
+						"stdc++",
+						"m",
+						"gcc_s",
+						"gcc",
+						"c",
+						"gcc_s",
+						"gcc"
+					]
+				},
+				"path" : "/opt/software/easybuild/amd/software/GCCcore/13.2.0/bin/c++",
+				"version" : "13.2.0"
+			},
+			"language" : "CXX",
+			"sourceFileExtensions" : 
+			[
+				"C",
+				"M",
+				"c++",
+				"cc",
+				"cpp",
+				"cxx",
+				"m",
+				"mm",
+				"mpp",
+				"CPP",
+				"ixx",
+				"cppm",
+				"ccm",
+				"cxxm",
+				"c++m"
+			]
+		}
+	],
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}
