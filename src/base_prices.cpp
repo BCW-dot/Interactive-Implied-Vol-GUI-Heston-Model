@@ -37,6 +37,7 @@ void compute_base_prices_multi_maturity(
             const CalibrationPoint& point = d_calibration_points(instance);
             const int N = point.time_steps;
             const double delta_t = point.delta_t;
+            const double K = point.strike;
             
             // Setup workspace views
             auto U_i = Kokkos::subview(workspace.U, instance, Kokkos::ALL);
@@ -54,6 +55,7 @@ void compute_base_prices_multi_maturity(
             GridViews grid_i = deviceGrids(instance);
 
             grid_i.rebuild_variance_views(V_0, 5.0, 5.0/500, team);
+            grid_i.rebuild_stock_views(S_0, 8*K, K, K/5, team);
             
             bounds_d(instance).initialize(grid_i, r_d, r_f, team);
             auto bounds = bounds_d(instance);
@@ -61,6 +63,18 @@ void compute_base_prices_multi_maturity(
             A0_solvers(instance).build_matrix(grid_i, rho, sigma, team);
             A1_solvers(instance).build_matrix(grid_i, r_d, r_f, theta, delta_t, team);
             A2_solvers(instance).build_matrix(grid_i, r_d, kappa, eta, sigma, theta, delta_t, team);
+
+            // Initialize U_i with payoff directly on device
+            Kokkos::parallel_for(Kokkos::TeamThreadRange(team, m2+1), 
+            [&](const int j) {
+                for(int i = 0; i <= m1; i++) {
+                    // Compute max(S-K, 0) for each point
+                    double s_value = grid_i.device_Vec_s(i);
+                    double payoff = Kokkos::max(s_value - K, 0.0);
+                    U_i(i + j*(m1+1)) = payoff;
+                }
+            });
+            team.team_barrier();
 
             // Use instance-specific time steps and delta_t
             device_DO_timestepping<Kokkos::DefaultExecutionSpace, decltype(U_i)>(
@@ -73,14 +87,8 @@ void compute_base_prices_multi_maturity(
                 team
             );
             
-            // Find spot price index
-            int index_s = -1;
-            for(int i = 0; i <= m1; i++) {
-                if(Kokkos::abs(grid_i.device_Vec_s(i) - S_0) < 1e-10) {
-                    index_s = i;
-                    break;
-                }
-            }
+            // Find spot and variance price index
+            const int index_s = grid_i.find_s0_index(S_0);
             const int index_v = grid_i.find_v0_index(V_0);
 
             // Store base price
@@ -127,6 +135,7 @@ void compute_base_prices_multi_maturity_american_dividends(
             const CalibrationPoint& point = d_calibration_points(instance);
             const int N = point.time_steps;
             const double delta_t = point.delta_t;
+            const double K = point.strike;
             
             // Setup workspace views
             auto U_i = Kokkos::subview(workspace.U, instance, Kokkos::ALL);
@@ -150,9 +159,9 @@ void compute_base_prices_multi_maturity_american_dividends(
             auto U_temp_i = Kokkos::subview(workspace.U_temp, instance, Kokkos::ALL);
 
             GridViews grid_i = deviceGrids(instance);
-            auto device_Vec_s_i = grid_i.device_Vec_s;
-
+            grid_i.rebuild_stock_views(S_0, 8*K, K, K/5, team);
             grid_i.rebuild_variance_views(V_0, 5.0, 5.0/500, team);
+            auto device_Vec_s_i = grid_i.device_Vec_s;
             
             bounds_d(instance).initialize(grid_i, r_d, r_f, team);
             auto bounds = bounds_d(instance);
@@ -160,6 +169,19 @@ void compute_base_prices_multi_maturity_american_dividends(
             A0_solvers(instance).build_matrix(grid_i, rho, sigma, team);
             A1_solvers(instance).build_matrix(grid_i, r_d, r_f, theta, delta_t, team);
             A2_solvers(instance).build_matrix(grid_i, r_d, kappa, eta, sigma, theta, delta_t, team);
+
+            // Initialize U_i with payoff directly on device
+            Kokkos::parallel_for(Kokkos::TeamThreadRange(team, m2+1), 
+            [&](const int j) {
+                for(int i = 0; i <= m1; i++) {
+                    // Compute max(S-K, 0) for each point
+                    double s_value = grid_i.device_Vec_s(i);
+                    double payoff = Kokkos::max(s_value - K, 0.0);
+                    U_i(i + j*(m1+1)) = payoff;
+                    U_0_i(i + j*(m1+1)) = payoff;
+                }
+            });
+            team.team_barrier();
 
             // Use instance-specific time steps and delta_t
             device_DO_timestepping_american_dividend<Kokkos::DefaultExecutionSpace, decltype(U_i)>(
@@ -179,14 +201,8 @@ void compute_base_prices_multi_maturity_american_dividends(
                 team
             );
             
-            // Find spot price index
-            int index_s = -1;
-            for(int i = 0; i <= m1; i++) {
-                if(Kokkos::abs(grid_i.device_Vec_s(i) - S_0) < 1e-10) {
-                    index_s = i;
-                    break;
-                }
-            }
+            // Find spot and variance price index
+            const int index_s = grid_i.find_s0_index(S_0);
             const int index_v = grid_i.find_v0_index(V_0);
 
             // Store base price
@@ -220,9 +236,6 @@ void compute_implied_vol_surface(
             
             // Get the option price
             double option_price = base_prices(idx);
-            
-            // Newton-Raphson method for implied volatility with fallback to bisection
-            double vol = 0.0;
             
             // Initial guess for volatility (midpoint of reasonable range)
             double x = 0.3;

@@ -34,14 +34,17 @@ const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 1000;
 
 // Model parameters with default values
+
+float S_0 = 100.0f;
+
+float r_d = 0.025;
+float q = 0.0;
+
 float kappa = 1.5f;
 float eta = 0.04f;
 float sigma = 0.3f;
 float rho = -0.9f;
 float v0 = 0.04f;
-
-float r_d = 0.025;
-float q = 0.0;
 
 // View rotation
 float rotationX = 30.0f;
@@ -449,11 +452,11 @@ void renderBothSurfaces(
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 }
 
+
 int main() {
     Kokkos::initialize();
     {
-        // Market parameters
-        const double S_0 = 100.0;
+        //scheme parameter
         const double theta = 0.8;
         
         // Grid dimensions - keep small for interactive performance
@@ -462,14 +465,14 @@ int main() {
         const int total_size = (m1+1) * (m2+1);
         
         // Surface dimensions
-        const int width = 60;  // Number of strikes
-        const int height = 40; // Number of maturities
+        const int width = 50;  // Number of strikes
+        const int height = 20; // Number of maturities
 
         // Actual data ranges for visualization
         float min_strike = S_0 * 0.5f; //50% of spot
         float max_strike = S_0 * 1.3f; //130% of spot
         float min_maturity = 0.25f; //3 month maturity
-        float max_maturity = (0.25f + (height - 1) * 0.25f) * 0.5; //3 monnths + 20/4 months
+        float max_maturity = 3.5f;//0.25f + ((height - 1) * 0.25f) * 0.5; //3 monnths + 20/4 months
 
         float max_price = 0.5f * min_strike;  // Set a reasonable maximum or compute from data, not needed for computations
         //float max_iv = 1.0f;      // Set a reasonable maximum or compute from data, not needed for computations
@@ -523,7 +526,7 @@ int main() {
         Init the divident dates and pass them to the gpu
         
         */
-        std::vector<double> dividend_dates = {0.2, 1.4, 2.6, 3.8};
+        std::vector<double> dividend_dates = {0.5, 1.4, 2.6, 3.0};
         std::vector<double> dividend_amounts = {0.70, 0.70, 0.70, 0.70};  // $0.10 per quarter
         std::vector<double> dividend_percentages = {0.0005, 0.0005, 0.0005, 0.0005};  // 0.05% per quarter
         
@@ -712,6 +715,7 @@ int main() {
         
         std::cout << "starting render" << std::endl;
         while (!glfwWindowShouldClose(window)) {
+
             // Process input
             processInput(window);
 
@@ -736,10 +740,15 @@ int main() {
             if (ImGui::SliderFloat("Rho", &rho, -1.0f, 1.0f)) paramsChanged = true;
             if (ImGui::SliderFloat("V0", &v0, 0.01f, 1.5f)) paramsChanged = true;
 
-            //added a r_d slider, r_d is still constant for each PDE solve
-            if (ImGui::SliderFloat("r_d", &r_d, 0.001f, 0.2f)) paramsChanged = true;
-            if (ImGui::SliderFloat("q", &q, 0.00f, 0.2f)) paramsChanged = true;
             
+            ImGui::Separator();
+
+            //added a r_d slider, r_d is still constant for each PDE solve
+            ImGui::Text("Risk Modelling controlls");
+            if (ImGui::SliderFloat("r_d", &r_d, 0.0f, 0.2f)) paramsChanged = true;
+            if (ImGui::SliderFloat("q", &q, 0.0f, 0.2f)) paramsChanged = true;
+            if (ImGui::SliderFloat("S0", &S_0, 90.0f, 110.0f)) paramsChanged = true;
+
             ImGui::Separator();
             
             // Add rotation controls
@@ -749,18 +758,8 @@ int main() {
             
             // Display current values
             ImGui::Separator();
-            ImGui::Text("Current values: kappa=%.2f, eta=%.4f, sigma=%.2f, rho=%.2f, v0=%.4f, r_d=%.4f, q=%.4f", 
-                        kappa, eta, sigma, rho, v0, r_d, q);
-
-            /*
-            ImGui::Text("PDEs solved: %d", totalPdesSolved);
-            ImGui::SameLine();
-            int iconCount = std::min(20, width * height / 10); // Limit icons to 20
-            for (int i = 0; i < iconCount; i++) {
-                ImGui::SameLine(0.0f, 5.0f);
-                ImGui::Text("⚙️"); // Gear icon to represent calculations
-            }
-            */
+            ImGui::Text("Current values: kappa=%.2f, eta=%.4f, sigma=%.2f, rho=%.2f, v0=%.4f, r_d=%.4f, q=%.4f, S0=%.1f", 
+                        kappa, eta, sigma, rho, v0, r_d, q, S_0);
 
             // Add the PDE counter display
             ImGui::Text("PDEs solved: %d (current: %d)", totalPdesSolved, width * height);
@@ -775,7 +774,24 @@ int main() {
             // Compute new surface if parameters changed
             if (paramsChanged) {
                 //Reset initial condition
+                /*
+                for(const auto& point : calibration_points) {
+                    int idx = point.global_index;
+                    double K = point.strike;
+                    
+                    auto h_Vec_s = Kokkos::create_mirror_view(hostGrids[idx].device_Vec_s);
+                    Kokkos::deep_copy(h_Vec_s, hostGrids[idx].device_Vec_s);
+                    
+                    for(int j = 0; j <= m2; j++) {
+                        for(int i = 0; i <= m1; i++) {
+                            h_U_0(idx, i + j*(m1+1)) = std::max(h_Vec_s(i) - K, 0.0);
+                        }
+                    }
+                }
+                Kokkos::deep_copy(U_0, h_U_0);
+                
                 Kokkos::deep_copy(workspace.U, U_0); 
+                */
                 max_surface = 0; 
                 max_iv_surface = 0; 
                 
@@ -792,6 +808,7 @@ int main() {
                     workspace, base_prices, policy
                 );
                 */
+                
                 
 
                 // Compute American Call option prices on a dividend paying stock
@@ -814,6 +831,7 @@ int main() {
                     base_prices,
                     policy
                 );
+                
                 
 
                 //Compute the Implied Vol-surface to the computed prices
@@ -849,7 +867,7 @@ int main() {
                 }
             }
 
-            //Renders both surfaces next to each other
+            //Renders both surfaces next to each other European Call
             //renderBothSurfaces(surface, iv_surface, rotationX, rotationY);
 
             //Renders surfaces with S_0 and dividend dates marked

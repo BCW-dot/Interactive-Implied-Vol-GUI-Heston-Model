@@ -18,6 +18,7 @@ struct GridViews {
   GridViews() = default;
 
   Kokkos::View<double*> temp_v;  // For rebuilding variance grid
+  Kokkos::View<double*> temp_s;  // For rebuilding stock grid
 
   // Add new device-callable method. This is needed or the calibration step V0+eps
     template<class TeamMember>
@@ -87,6 +88,69 @@ struct GridViews {
     }
 
 
+    // For rebuilding stock grid direction
+    template<class TeamMember>
+    KOKKOS_FUNCTION
+    void rebuild_stock_views(const double S_0_new, const double S, const double K, const double c,
+                        const TeamMember& team) {
+        // Build initial grid
+        const double Delta_xi = (1.0 / m1) * (Kokkos::asinh((S - K) / c) - Kokkos::asinh(-K / c));
+        
+        Kokkos::parallel_for(Kokkos::TeamThreadRange(team, m1 + 1),
+            [&](const int i) {
+                const double xi = Kokkos::asinh(-K / c) + i * Delta_xi;
+                temp_s(i) = K + c * Kokkos::sinh(xi);
+            });
+        team.team_barrier();
+        
+        // Add S_0 at end
+        if(team.team_rank() == 0) {
+            temp_s(m1 + 1) = S_0_new;
+        }
+        team.team_barrier();
+
+        // Sort the array (simple bubble sort for device compatibility)
+        if(team.team_rank() == 0) {
+            for(int i = 0; i < m1 + 2; i++) {
+                for(int j = 0; j < m1 + 1 - i; j++) {
+                    if(temp_s(j) > temp_s(j + 1)) {
+                        double temp = temp_s(j);
+                        temp_s(j) = temp_s(j + 1);
+                        temp_s(j + 1) = temp;
+                    }
+                }
+            }
+        }
+        team.team_barrier();
+
+        // Copy sorted values (excluding last element) to device_Vec_s
+        Kokkos::parallel_for(Kokkos::TeamThreadRange(team, m1 + 1),
+            [&](const int i) {
+                device_Vec_s(i) = temp_s(i);
+            });
+        team.team_barrier();
+
+        // Rebuild Delta_s
+        Kokkos::parallel_for(Kokkos::TeamThreadRange(team, m1),
+            [&](const int i) {
+                device_Delta_s(i) = device_Vec_s(i + 1) - device_Vec_s(i);
+            });
+        team.team_barrier();
+    }
+
+    KOKKOS_INLINE_FUNCTION
+    int find_s0_index(const double S_0) {
+        // Find index where device_Vec_s equals S_0 (within tolerance)
+        int closest_idx = 0;
+        for(int i = 0; i <= m1; i++) {
+            if(Kokkos::abs(device_Vec_s(i) - S_0) < 1e-10) {
+                closest_idx = i;
+                break;
+            }
+        }
+        
+        return closest_idx;
+    }
 
 };
 
@@ -104,6 +168,7 @@ inline void buildMultipleGridViews(std::vector<GridViews> &hostGrids, int nInsta
         hostGrids[i].device_Delta_v = Kokkos::View<double*>("delta_v",m2);
 
         hostGrids[i].temp_v = Kokkos::View<double*>("temp_v", m2 + 2);
+        hostGrids[i].temp_s = Kokkos::View<double*>("temp_s", m1 + 2);
 
         hostGrids[i].m1 = m1;
         hostGrids[i].m2 = m2;
