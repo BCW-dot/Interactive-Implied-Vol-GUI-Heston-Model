@@ -14,6 +14,8 @@ set(SOURCES
     src/glad.c
     src/grid.cpp
     src/base_prices.cpp
+    src/renderer.cpp
+    src/interactive.cpp
     imgui/imgui.cpp
     imgui/imgui_demo.cpp
     imgui/imgui_draw.cpp

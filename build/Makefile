@@ -345,6 +345,30 @@ src/grid.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/grid.cpp.s
 .PHONY : src/grid.cpp.s
 
+src/interactive.o: src/interactive.cpp.o
+.PHONY : src/interactive.o
+
+# target to build an object file
+src/interactive.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o
+.PHONY : src/interactive.cpp.o
+
+src/interactive.i: src/interactive.cpp.i
+.PHONY : src/interactive.i
+
+# target to preprocess a source file
+src/interactive.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.i
+.PHONY : src/interactive.cpp.i
+
+src/interactive.s: src/interactive.cpp.s
+.PHONY : src/interactive.s
+
+# target to generate assembly for a file
+src/interactive.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.s
+.PHONY : src/interactive.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -368,6 +392,30 @@ src/main.s: src/main.cpp.s
 src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
+
+src/renderer.o: src/renderer.cpp.o
+.PHONY : src/renderer.o
+
+# target to build an object file
+src/renderer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o
+.PHONY : src/renderer.cpp.o
+
+src/renderer.i: src/renderer.cpp.i
+.PHONY : src/renderer.i
+
+# target to preprocess a source file
+src/renderer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.i
+.PHONY : src/renderer.cpp.i
+
+src/renderer.s: src/renderer.cpp.s
+.PHONY : src/renderer.s
+
+# target to generate assembly for a file
+src/renderer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/VolatilitySurfaceExplorer.dir/build.make CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.s
+.PHONY : src/renderer.cpp.s
 
 # Help Target
 help:
@@ -405,9 +453,15 @@ help:
 	@echo "... src/grid.o"
 	@echo "... src/grid.i"
 	@echo "... src/grid.s"
+	@echo "... src/interactive.o"
+	@echo "... src/interactive.i"
+	@echo "... src/interactive.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/renderer.o"
+	@echo "... src/renderer.i"
+	@echo "... src/renderer.s"
 .PHONY : help
 
 

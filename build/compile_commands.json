@@ -19,6 +19,18 @@
 },
 {
   "directory": "/home/benedikt/c++_vizu_test/build",
+  "command": "/usr/bin/g++-12 -DKOKKOS_DEPENDENCE -I/home/benedikt/c++_vizu_test/include -I/home/benedikt/c++_vizu_test/include/glad -I/home/benedikt/c++_vizu_test/imgui -I/home/benedikt/c++_vizu_test/imgui/backends -I/home/benedikt/c++_vizu_test/src -isystem /usr/local/kokkoskernels/include -isystem /usr/local/kokkos/include -g -std=c++17 -fno-tree-vectorize -extended-lambda -Wext-lambda-captures-this -arch=sm_75 -o CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o -c /home/benedikt/c++_vizu_test/src/renderer.cpp",
+  "file": "/home/benedikt/c++_vizu_test/src/renderer.cpp",
+  "output": "CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o"
+},
+{
+  "directory": "/home/benedikt/c++_vizu_test/build",
+  "command": "/usr/bin/g++-12 -DKOKKOS_DEPENDENCE -I/home/benedikt/c++_vizu_test/include -I/home/benedikt/c++_vizu_test/include/glad -I/home/benedikt/c++_vizu_test/imgui -I/home/benedikt/c++_vizu_test/imgui/backends -I/home/benedikt/c++_vizu_test/src -isystem /usr/local/kokkoskernels/include -isystem /usr/local/kokkos/include -g -std=c++17 -fno-tree-vectorize -extended-lambda -Wext-lambda-captures-this -arch=sm_75 -o CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o -c /home/benedikt/c++_vizu_test/src/interactive.cpp",
+  "file": "/home/benedikt/c++_vizu_test/src/interactive.cpp",
+  "output": "CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o"
+},
+{
+  "directory": "/home/benedikt/c++_vizu_test/build",
   "command": "/usr/bin/g++-12 -DKOKKOS_DEPENDENCE -I/home/benedikt/c++_vizu_test/include -I/home/benedikt/c++_vizu_test/include/glad -I/home/benedikt/c++_vizu_test/imgui -I/home/benedikt/c++_vizu_test/imgui/backends -I/home/benedikt/c++_vizu_test/src -isystem /usr/local/kokkoskernels/include -isystem /usr/local/kokkos/include -g -std=c++17 -fno-tree-vectorize -extended-lambda -Wext-lambda-captures-this -arch=sm_75 -o CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o -c /home/benedikt/c++_vizu_test/imgui/imgui.cpp",
   "file": "/home/benedikt/c++_vizu_test/imgui/imgui.cpp",
   "output": "CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o"

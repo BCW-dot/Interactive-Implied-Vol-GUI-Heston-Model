@@ -111,10 +111,38 @@ CMakeFiles/VolatilitySurfaceExplorer.dir/src/base_prices.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/VolatilitySurfaceExplorer.dir/src/base_prices.cpp.s"
 	/usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/benedikt/c++_vizu_test/src/base_prices.cpp -o CMakeFiles/VolatilitySurfaceExplorer.dir/src/base_prices.cpp.s
 
+CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/flags.make
+CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o: /home/benedikt/c++_vizu_test/src/renderer.cpp
+CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o"
+	/usr/local/kokkos/bin/kokkos_launch_compiler /usr/local/kokkos/bin/nvcc_wrapper /usr/bin/g++-12 /usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o -MF CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o.d -o CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o -c /home/benedikt/c++_vizu_test/src/renderer.cpp
+
+CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.i"
+	/usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/benedikt/c++_vizu_test/src/renderer.cpp > CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.i
+
+CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.s"
+	/usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/benedikt/c++_vizu_test/src/renderer.cpp -o CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.s
+
+CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/flags.make
+CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o: /home/benedikt/c++_vizu_test/src/interactive.cpp
+CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o"
+	/usr/local/kokkos/bin/kokkos_launch_compiler /usr/local/kokkos/bin/nvcc_wrapper /usr/bin/g++-12 /usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o -MF CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o.d -o CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o -c /home/benedikt/c++_vizu_test/src/interactive.cpp
+
+CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.i"
+	/usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/benedikt/c++_vizu_test/src/interactive.cpp > CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.i
+
+CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.s"
+	/usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/benedikt/c++_vizu_test/src/interactive.cpp -o CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.s
+
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/flags.make
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o: /home/benedikt/c++_vizu_test/imgui/imgui.cpp
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o"
 	/usr/local/kokkos/bin/kokkos_launch_compiler /usr/local/kokkos/bin/nvcc_wrapper /usr/bin/g++-12 /usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o -MF CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o.d -o CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o -c /home/benedikt/c++_vizu_test/imgui/imgui.cpp
 
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.i: cmake_force
@@ -128,7 +156,7 @@ CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.s: cmake_force
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/flags.make
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.o: /home/benedikt/c++_vizu_test/imgui/imgui_demo.cpp
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.o"
 	/usr/local/kokkos/bin/kokkos_launch_compiler /usr/local/kokkos/bin/nvcc_wrapper /usr/bin/g++-12 /usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.o -MF CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.o.d -o CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.o -c /home/benedikt/c++_vizu_test/imgui/imgui_demo.cpp
 
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.i: cmake_force
@@ -142,7 +170,7 @@ CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.s: cmake_force
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/flags.make
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.o: /home/benedikt/c++_vizu_test/imgui/imgui_draw.cpp
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.o"
 	/usr/local/kokkos/bin/kokkos_launch_compiler /usr/local/kokkos/bin/nvcc_wrapper /usr/bin/g++-12 /usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.o -MF CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.o.d -o CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.o -c /home/benedikt/c++_vizu_test/imgui/imgui_draw.cpp
 
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.i: cmake_force
@@ -156,7 +184,7 @@ CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.s: cmake_force
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_tables.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/flags.make
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_tables.cpp.o: /home/benedikt/c++_vizu_test/imgui/imgui_tables.cpp
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_tables.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_tables.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_tables.cpp.o"
 	/usr/local/kokkos/bin/kokkos_launch_compiler /usr/local/kokkos/bin/nvcc_wrapper /usr/bin/g++-12 /usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_tables.cpp.o -MF CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_tables.cpp.o.d -o CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_tables.cpp.o -c /home/benedikt/c++_vizu_test/imgui/imgui_tables.cpp
 
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_tables.cpp.i: cmake_force
@@ -170,7 +198,7 @@ CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_tables.cpp.s: cmake_force
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/flags.make
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.o: /home/benedikt/c++_vizu_test/imgui/imgui_widgets.cpp
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.o"
 	/usr/local/kokkos/bin/kokkos_launch_compiler /usr/local/kokkos/bin/nvcc_wrapper /usr/bin/g++-12 /usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.o -MF CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.o.d -o CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.o -c /home/benedikt/c++_vizu_test/imgui/imgui_widgets.cpp
 
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.i: cmake_force
@@ -184,7 +212,7 @@ CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_widgets.cpp.s: cmake_force
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_glfw.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/flags.make
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_glfw.cpp.o: /home/benedikt/c++_vizu_test/imgui/backends/imgui_impl_glfw.cpp
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_glfw.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_glfw.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_glfw.cpp.o"
 	/usr/local/kokkos/bin/kokkos_launch_compiler /usr/local/kokkos/bin/nvcc_wrapper /usr/bin/g++-12 /usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_glfw.cpp.o -MF CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_glfw.cpp.o.d -o CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_glfw.cpp.o -c /home/benedikt/c++_vizu_test/imgui/backends/imgui_impl_glfw.cpp
 
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_glfw.cpp.i: cmake_force
@@ -198,7 +226,7 @@ CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_glfw.cpp.s: c
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/flags.make
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_opengl3.cpp.o: /home/benedikt/c++_vizu_test/imgui/backends/imgui_impl_opengl3.cpp
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_opengl3.cpp.o: CMakeFiles/VolatilitySurfaceExplorer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_opengl3.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_opengl3.cpp.o"
 	/usr/local/kokkos/bin/kokkos_launch_compiler /usr/local/kokkos/bin/nvcc_wrapper /usr/bin/g++-12 /usr/bin/g++-12 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_opengl3.cpp.o -MF CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_opengl3.cpp.o.d -o CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_opengl3.cpp.o -c /home/benedikt/c++_vizu_test/imgui/backends/imgui_impl_opengl3.cpp
 
 CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/backends/imgui_impl_opengl3.cpp.i: cmake_force
@@ -214,6 +242,8 @@ VolatilitySurfaceExplorer_OBJECTS = \
 "CMakeFiles/VolatilitySurfaceExplorer.dir/src/main.cpp.o" \
 "CMakeFiles/VolatilitySurfaceExplorer.dir/src/grid.cpp.o" \
 "CMakeFiles/VolatilitySurfaceExplorer.dir/src/base_prices.cpp.o" \
+"CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o" \
+"CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o" \
 "CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o" \
 "CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.o" \
 "CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.o" \
@@ -228,6 +258,8 @@ VolatilitySurfaceExplorer_EXTERNAL_OBJECTS =
 VolatilitySurfaceExplorer: CMakeFiles/VolatilitySurfaceExplorer.dir/src/main.cpp.o
 VolatilitySurfaceExplorer: CMakeFiles/VolatilitySurfaceExplorer.dir/src/grid.cpp.o
 VolatilitySurfaceExplorer: CMakeFiles/VolatilitySurfaceExplorer.dir/src/base_prices.cpp.o
+VolatilitySurfaceExplorer: CMakeFiles/VolatilitySurfaceExplorer.dir/src/renderer.cpp.o
+VolatilitySurfaceExplorer: CMakeFiles/VolatilitySurfaceExplorer.dir/src/interactive.cpp.o
 VolatilitySurfaceExplorer: CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui.cpp.o
 VolatilitySurfaceExplorer: CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_demo.cpp.o
 VolatilitySurfaceExplorer: CMakeFiles/VolatilitySurfaceExplorer.dir/imgui/imgui_draw.cpp.o
@@ -246,7 +278,7 @@ VolatilitySurfaceExplorer: /usr/lib/x86_64-linux-gnu/libcublas.so
 VolatilitySurfaceExplorer: /usr/lib/x86_64-linux-gnu/libcusparse.so
 VolatilitySurfaceExplorer: /usr/lib/x86_64-linux-gnu/libcusolver.so
 VolatilitySurfaceExplorer: CMakeFiles/VolatilitySurfaceExplorer.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable VolatilitySurfaceExplorer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/benedikt/c++_vizu_test/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable VolatilitySurfaceExplorer"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/VolatilitySurfaceExplorer.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
